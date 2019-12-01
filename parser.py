@@ -72,6 +72,7 @@ class Parser:
     def __store_projects(self):
         now = datetime.utcnow()
         new_projects = 0
+        updated_projects = 0
 
         for project in self.projects:
             p = Projects.objects(project_id=project['project_id']).first()
@@ -84,12 +85,14 @@ class Parser:
                 p.checks.append(check)
                 p.last_check_at = now
                 p.save()
+                updated_projects += 1
 
-        self.log.info(f'{new_projects} of {Projects.objects.count()} new projects were stored.')
+        self.log.info(f'Projects: updated={updated_projects}, new={new_projects}, all={Projects.objects.count()}')
 
     def __store_flats(self):
         now = datetime.utcnow()
         new_flats = 0
+        updated_flats = 0
 
         for flat in self.flats:
             p = Projects.objects(project_id=flat.pop('project_id')).first()
@@ -103,8 +106,9 @@ class Parser:
                 f.checks.append(check)
                 f.last_check_at = now
                 f.save()
+                updated_flats += 1
 
-        self.log.info(f'{new_flats} of {Flats.objects.count()} new flats were stored.')
+        self.log.info(f'Flats: updated={updated_flats}, new={new_flats}, all={Flats.objects.count()}')
 
     def run(self):
         self.__download_projects()
@@ -121,6 +125,3 @@ if __name__ == '__main__':
     parser = Parser()
     parser.run()
     parser.store()
-
-
-
