@@ -1,9 +1,9 @@
 from datetime import datetime
 
 from mongoengine import Document, IntField, ReferenceField, DateTimeField, \
-    StringField, EmbeddedDocument, EmbeddedDocumentListField
+    StringField, EmbeddedDocument, EmbeddedDocumentListField, connect
 
-from models.projects import Projects
+from web.models.projects import Projects
 
 
 class FlatCheck(EmbeddedDocument):
