@@ -13,3 +13,5 @@ app.register_blueprint(projects.bp)
 db = MongoEngine()
 
 db.init_app(app)
+
+from web import models

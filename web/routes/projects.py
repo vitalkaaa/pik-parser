@@ -1,12 +1,16 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 from web.models import Flats, Projects
 
 bp = Blueprint("projects", __name__)
 
 
 @bp.route('/projects')
-def test():
-    html = ''
-    for project in Projects.objects().all():
-        html += f'{project.name} {project.url} {project.found_at} {project.last_flats}<br>'
-    return html
+def projects():
+    return render_template('projects.html', projects=Projects.objects().all())
+
+
+@bp.route('/projects/<int:project_id>')
+def flats(project_id):
+    project = Projects.objects(project_id=project_id)[0]
+    if project is not None:
+        return render_template('flats.html', flats=Flats.objects(project=project).all())

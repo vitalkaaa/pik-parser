@@ -1,6 +1,8 @@
+import json
 from datetime import datetime
 
-from mongoengine import DateTimeField, StringField, Document, IntField, EmbeddedDocument, EmbeddedDocumentListField
+from mongoengine import DateTimeField, StringField, IntField, EmbeddedDocument, EmbeddedDocumentListField, ListField, DictField
+from flask_mongoengine import Document
 
 
 class ProjectCheck(EmbeddedDocument):
@@ -20,6 +22,28 @@ class Projects(Document):
 
     @staticmethod
     def create(projectd, check):
-        now = datetime.utcnow()
+        Projects(**projectd, checks=[check], found_at=check.check_at, last_check_at=check.check_at).save()
 
-        Projects(**projectd, checks=[check], found_at=now, last_check_at=now).save()
+    @staticmethod
+    def create_or_update(projectd):
+        now = datetime.utcnow()
+        p = Projects.objects(project_id=projectd['project_id']).first()
+        check = ProjectCheck(check_at=now, flats=projectd['last_flats'])
+
+        if p is None:
+            Projects.create(projectd=projectd, check=check)
+            return {'status': 'created'}
+        else:
+            p.checks.append(check)
+            p.last_check_at = now
+            p.save()
+            return {'status': 'updated'}
+
+    @staticmethod
+    def get_all_list():
+        result = list()
+        for project in Projects.objects().all():
+            d = json.loads(project.to_json())
+            d['checks'] = [c for c in d['checks']]
+            result.append(d)
+        return result

@@ -1,9 +1,10 @@
 from datetime import datetime
 
-from mongoengine import Document, IntField, ReferenceField, DateTimeField, \
+from mongoengine import IntField, ReferenceField, DateTimeField, \
     StringField, EmbeddedDocument, EmbeddedDocumentListField, connect
 
 from web.models.projects import Projects
+from flask_mongoengine import Document
 
 
 class FlatCheck(EmbeddedDocument):
@@ -31,10 +32,25 @@ class Flats(Document):
     checks = EmbeddedDocumentListField(FlatCheck, default=list())
 
     @staticmethod
-    def create(flatd, check, project):
-        now = datetime.utcnow()
+    def create(flatd, check):
+        project = Projects.objects(project_id=flatd.pop('project_id')).first()
 
         if flatd.get('settlement_date'):
             flatd['settlement_date'] = datetime.strptime(flatd.pop('settlement_date'), '%Y-%m-%d')
 
-        Flats(**flatd, project=project, checks=[check], found_at=now, last_check_at=now).save()
+        Flats(**flatd, project=project, checks=[check], found_at=check.check_at, last_check_at=check.check_at).save()
+
+    @staticmethod
+    def create_or_update(flatd):
+        now = datetime.utcnow()
+        f = Flats.objects(flat_id=flatd['flat_id']).first()
+        check = FlatCheck(check_at=now, status=flatd['last_status'], price=flatd['last_price'])
+
+        if f is None:
+            Flats.create(flatd=flatd, check=check)
+            return {'status': 'created'}
+        else:
+            f.checks.append(check)
+            f.last_check_at = now
+            f.save()
+            return {'status': 'updated'}
