@@ -97,7 +97,7 @@ pbr==5.1.1
 pendulum==1.4.4
 pexpect==4.6.0
 pika==1.0.1
-Pillow==5.4.1
+Pillow==6.2.0
 prison==0.1.0
 protobuf==3.6.1
 psutil==5.6.3
