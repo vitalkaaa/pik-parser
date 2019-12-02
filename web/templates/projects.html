@@ -27,7 +27,7 @@
                     "last_flats": "{{ project.last_flats }}",
                     "checks": [
                         {% for check in project.checks %}
-                            {{ check.to_json() }},
+                            {"check_at": "{{ check.check_at }}", "flats": {{ check.flats }} },
                         {% endfor %}
                     ]
                 },

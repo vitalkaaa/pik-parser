@@ -6,6 +6,7 @@ bp = Blueprint("projects", __name__)
 
 @bp.route('/projects')
 def projects():
+    print(Projects.objects().first().last_check_at)
     return render_template('projects.html', projects=Projects.objects().all())
 
 

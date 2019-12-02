@@ -18,7 +18,7 @@ class Projects(Document):
     last_check_at = DateTimeField(required=True, default=datetime.utcnow())
     last_flats = IntField(required=True)
 
-    checks = EmbeddedDocumentListField(ProjectCheck, required=True, default=list())
+    checks = ListField(DictField(), required=True, default=list())
 
     @staticmethod
     def create(projectd, check):
@@ -44,6 +44,6 @@ class Projects(Document):
         result = list()
         for project in Projects.objects().all():
             d = json.loads(project.to_json())
-            d['checks'] = [c for c in d['checks']]
+            d['checks'] = [c.last_check_at for c in d['checks']]
             result.append(d)
         return result
