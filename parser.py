@@ -1,13 +1,11 @@
-from datetime import datetime
-from pprint import pprint
 import logging
-import requests
 import sys
+from datetime import datetime
 
+import requests
 from mongoengine import connect
 
-from models.flats import Flats, FlatCheck
-from models.projects import Projects, ProjectCheck
+from web.models import ProjectCheck, Projects, FlatCheck, Flats
 
 
 class Parser:
