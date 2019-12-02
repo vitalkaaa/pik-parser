@@ -1,6 +1,6 @@
 alembic==1.1.0
 aniso8601==7.0.0
-apache-airflow==1.10.5
+apache-airflow==1.10.6
 apispec==2.0.2
 apturl==0.5.2
 argcomplete==1.10.0
