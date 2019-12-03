@@ -40,12 +40,3 @@ class Projects(Document):
             p.last_flats = check['flats']
             p.save()
             return {'status': 'updated'}
-
-    @staticmethod
-    def get_all_list():
-        result = list()
-        for project in Projects.objects().all():
-            d = json.loads(project.to_json())
-            d['checks'] = [c.last_check_at for c in d['checks']]
-            result.append(d)
-        return result
