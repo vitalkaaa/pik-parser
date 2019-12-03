@@ -1,6 +1,7 @@
 import logging
 import sys
 from datetime import datetime
+from pprint import pprint
 
 import requests
 from mongoengine import connect
@@ -9,7 +10,7 @@ from web.models import ProjectCheck, Projects, FlatCheck, Flats
 
 
 class Parser:
-    PROJECTS_API_URL = 'https://api.pik.ru/v1/block'
+    PROJECTS_API_URL = 'https://api.pik.ru/v1/block?images=1&types=1,2'
     FLATS_API_URL = "https://api.pik.ru/v2/flat?block_id=%s&type=1,2&page=%s"
     LOGGER_FORMAT = '%(asctime)s:%(name)s:%(levelname)s - %(message)s'
 
@@ -39,6 +40,7 @@ class Parser:
                     'project_id': project['id'],
                     'url': 'https://pik.ru' + project['url'],
                     'name': project['name'],
+                    'project_img': project['img']['100'],
                     'last_flats': flats_json.get('count', 0),
                 })
 
@@ -62,9 +64,9 @@ class Parser:
                         'address': flat['bulk']['address'],
                         'house': flat['bulk']['title'],
                         'settlement_date': flat['bulk']['settlement_date'],
-                        'section_id': flat['section']['number']
+                        'section_id': flat['section']['number'],
+                        'flat_plan_image': flat['layout']['flat_plan_png']
                     })
-                    break
 
         self.log.info(f'Got {len(self.flats)} flats')
 
