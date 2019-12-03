@@ -15,7 +15,7 @@ class Projects(Document):
     name = StringField(required=True)
     url = StringField(required=True)
     found_at = DateTimeField(default=datetime.utcnow())
-    project_img = StringField(required=True)
+    project_img = StringField()
     last_check_at = DateTimeField(required=True, default=datetime.utcnow())
     last_flats = IntField(required=True)
 
@@ -23,7 +23,6 @@ class Projects(Document):
 
     @staticmethod
     def create(projectd, check):
-        print(projectd.get('project_img'))
         Projects(**projectd, checks=[check], found_at=check['check_at'], last_check_at=check['check_at']).save()
 
     @staticmethod

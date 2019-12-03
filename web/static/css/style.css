@@ -1,0 +1,20 @@
+.photo img {
+  width: 100px;
+  max-width: none;
+  margin-top: -30px;
+  margin-left: -10px;
+}
+
+.fancy-grid-cell-inner {
+  margin-top: 30px;
+  font-size: 150%;
+  height: 30px;
+}
+
+.fancy-grid-column-sparkline canvas {
+    position: relative;
+    margin-top: -30px;
+    height: 50px;
+    top: 0px;
+    padding: 5px;
+}

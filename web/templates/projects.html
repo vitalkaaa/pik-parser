@@ -1,15 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.fancygrid.com/fancy.min.css" rel="stylesheet">
-    <script src="https://cdn.fancygrid.com/fancy.min.js"></script>
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script src="/static/js/fancy.min.js"></script>
+    <script src="/static/js/jquery.sparkline.min.js"></script>
+
+    <script src="/static/js/highcharts.js"></script>
+    <script src="/static/js/highchart-gray-theme.js"></script>
     <script>Fancy.MODULESDIR="https://cdn.fancygrid.com/modules/";</script>
+
 </head>
 <body>
 
 <div id="container"></div>
+
+
+
+<link href="/static/css/style.css" rel="stylesheet">
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -18,21 +30,28 @@
         renderTo: 'container',
         width: 'fit',
         height: 'fit',
+        trackOver: true,
+        cellHeight: 75,
+        columnLines: false,
+
         data: [
-            {% for project in projects %}
-                {
-                    "name": "{{ project.name }}",
-                    "url": "{{ project.url }}",
-                    "last_check_at": "{{ project.last_check_at }}",
-                    "last_flats": "{{ project.last_flats }}",
-                    "checks": [
-                        {% for check in project.checks %}
-                            {"check_at": "{{ check.check_at }}", "flats": {{ check.flats }} },
-                        {% endfor %}
-                    ]
-                },
-            {% endfor %}
+          {% for project in Projects.objects().all() %}
+            {
+              "name": "{{ project.name }}",
+              "url": "{{ project.url }}",
+              "project_image": "{{ project.project_image }}",
+              "last_check_at": "{{ project.last_check_at }}",
+              "last_flats": "{{ project.last_flats }}",
+              "project_img": "{{ project.project_img }}",
+              "flats": [
+                {% for check in project.checks %}
+                   {{ check.flats }},
+                {% endfor %}
+              ]
+             },
+          {% endfor %}
         ],
+
         theme: 'gray',
         selModel: {
           type: 'row',
@@ -64,6 +83,13 @@
           type: 'expand',
           locked: true,
         },{
+          index: 'project_img',
+          title: 'Фото',
+          type: 'image',
+          cls: 'photo',
+          flex: 1,
+          width: 100,
+        },{
           index: 'name',
           title: 'Название',
           flex: 1,
@@ -72,6 +98,11 @@
           title: 'Количество квартир',
           width: 150,
           type: 'number',
+        }, {
+          index: 'flats',
+          title: 'Количество квартир',
+          type: 'sparklineline',
+          width: 150,
         }, {
           index: 'last_check_at',
           title: 'Последнее обновление',
@@ -82,7 +113,6 @@
             read: 'Y-m-d',
           },
         }]
-
       });
     });
 

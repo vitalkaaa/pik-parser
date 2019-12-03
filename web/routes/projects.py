@@ -6,7 +6,7 @@ bp = Blueprint("projects", __name__)
 
 @bp.route('/projects')
 def projects():
-    return render_template('projects.html', projects=Projects.objects().all())
+    return render_template('projects.html', Projects=Projects)
 
 
 @bp.route('/projects/<int:project_id>')

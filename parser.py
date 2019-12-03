@@ -65,7 +65,7 @@ class Parser:
                         'house': flat['bulk']['title'],
                         'settlement_date': flat['bulk']['settlement_date'],
                         'section_id': flat['section']['number'],
-                        'flat_plan_image': flat['layout']['flat_plan_png']
+                        'flat_plan_img': flat['layout']['flat_plan_png'] if flat['layout']['flat_plan_png'] else ''
                     })
 
         self.log.info(f'Got {len(self.flats)} flats')

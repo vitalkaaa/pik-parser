@@ -24,7 +24,7 @@ class Flats(Document):
     address = StringField(required=True)
     settlement_date = DateTimeField()
     house = StringField(required=True)
-    flat_plan_image = StringField(required=True)
+    flat_plan_img = StringField()
 
     last_check_at = DateTimeField(required=True)
     last_price = IntField(required=True)
@@ -38,7 +38,6 @@ class Flats(Document):
 
         if flatd.get('settlement_date'):
             flatd['settlement_date'] = datetime.strptime(flatd.pop('settlement_date'), '%Y-%m-%d')
-
         Flats(**flatd, project=project, checks=[check], found_at=check['check_at'], last_check_at=check['check_at']).save()
 
     @staticmethod
