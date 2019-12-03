@@ -43,7 +43,6 @@ class Parser:
                     'project_img': project['img']['100'],
                     'flats': flats_json.get('count', 0),
                 })
-            break
 
         self.log.info(f'Got {len(self.projects)} projects')
 
