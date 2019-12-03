@@ -1,4 +1,9 @@
 
+function renderProjectInfo(projectData){
+    console.log(projectData)
+    $( "#test" ).text(projectData.name);
+}
+
 function renderProjectsGrid(){
     document.addEventListener("DOMContentLoaded", function() {
         new FancyGrid({
@@ -33,21 +38,14 @@ function renderProjectsGrid(){
                 cellAlign: 'center'
             },
 
-            expander: {
-                tpl: [
-                    '<div style="float: left;">',
-                    '<b>Ссылка на проект:</b> <a href={url}>{url}</a>',
-                    '</div>'
-                ].join(""),
-                dataFn: function(grid, data){
-                    return data;
-              }
-            },
+            events: [{
+                rowclick: function(grid, o){
+                    renderProjectInfo(o.data)
+                }
+            }],
+
 
             columns: [{
-                type: 'expand',
-                locked: true,
-            },{
                 index: 'project_img',
                 title: 'Фото',
                 type: 'image',
