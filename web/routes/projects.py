@@ -1,3 +1,5 @@
+import json
+
 from flask import Blueprint, render_template
 from web.models import Flats, Projects
 
@@ -6,7 +8,12 @@ bp = Blueprint("projects", __name__)
 
 @bp.route('/projects')
 def projects():
-    return render_template('projects.html', Projects=Projects)
+    return render_template('projects.html')
+
+
+@bp.route('/api/projects')
+def api_projects():
+    return json.dumps(dict(data=Projects.get_contexts()))
 
 
 @bp.route('/projects/<int:project_id>')

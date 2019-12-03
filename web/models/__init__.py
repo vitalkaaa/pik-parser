@@ -1,3 +1,3 @@
-from .projects import Projects, ProjectCheck
-from .flats import Flats, FlatCheck
+from .projects import Projects
+from .flats import Flats
 

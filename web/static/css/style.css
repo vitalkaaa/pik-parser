@@ -9,6 +9,7 @@
   margin-top: 30px;
   font-size: 150%;
   height: 30px;
+  font: red;
 }
 
 .fancy-grid-column-sparkline canvas {

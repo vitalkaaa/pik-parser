@@ -1,13 +1,8 @@
 import json
 from datetime import datetime
 
-from mongoengine import DateTimeField, StringField, IntField, EmbeddedDocument, EmbeddedDocumentListField, ListField, DictField
 from flask_mongoengine import Document
-
-
-class ProjectCheck(EmbeddedDocument):
-    check_at = DateTimeField(required=True)
-    flats = IntField(required=True)
+from mongoengine import DateTimeField, StringField, IntField, ListField, DictField
 
 
 class Projects(Document):
@@ -16,36 +11,60 @@ class Projects(Document):
     url = StringField(required=True)
     found_at = DateTimeField(default=datetime.utcnow())
     project_img = StringField()
-    last_check_at = DateTimeField(required=True, default=datetime.utcnow())
-    last_flats = IntField(required=True)
 
     checks = ListField(DictField(), required=True, default=list())
 
+    meta = {'strict': False}
+
     @staticmethod
     def create(projectd, check):
-        Projects(**projectd, checks=[check], found_at=check['check_at'], last_check_at=check['check_at']).save()
+        projectd.pop('flats')
+        Projects(**projectd, checks=[check], found_at=check['check_at']).save()
+
+    @staticmethod
+    def up_to_date(project, check):
+        project.checks.append(check)
+        project.save()
 
     @staticmethod
     def create_or_update(projectd):
         now = datetime.utcnow()
         p = Projects.objects(project_id=projectd['project_id']).first()
-        check = dict(check_at=now, flats=projectd['last_flats'])
+        check = dict(check_at=now, flats=projectd['flats'])
 
         if p is None:
             Projects.create(projectd=projectd, check=check)
             return {'status': 'created'}
         else:
-            p.checks.append(check)
-            p.last_check_at = check['check_at']
-            p.last_flats = check['flats']
-            p.save()
+            Projects.up_to_date(project=p, check=check)
             return {'status': 'updated'}
 
     @staticmethod
-    def get_all_list():
-        result = list()
-        for project in Projects.objects().all():
-            d = json.loads(project.to_json())
-            d['checks'] = [c.last_check_at for c in d['checks']]
-            result.append(d)
-        return result
+    def get_contexts():
+        contexts = list()
+        for project in Projects.objects.all():
+            contexts.append({
+                'project_id': project.project_id,
+                'name': project.name,
+                'url': project.url,
+                'project_img': project.project_img,
+                'last_check_at': str(project['checks'][-1]['check_at'].isoformat()),
+                'last_flats': project['checks'][-1]['flats'],
+                'flats': [check['flats'] for check in project['checks']],
+                'dates': [str(check['check_at'].isoformat()) for check in project['checks']],
+            })
+        return contexts
+
+    @staticmethod
+    def get_context(project_id):
+        project = Projects.objects(project_id=project_id).first()
+        return {
+            'project_id': project_id,
+            'name': project.name,
+            'url': project.url,
+            'project_img': project.project_img,
+            'last_check_at': str(project['checks'][-1]['check_at'].isoformat()),
+            'last_flats': project['checks'][-1]['flats'],
+            'flats': [check['flats'] for check in project['checks']],
+            'dates': [check['dates'] for check in project['checks']],
+        }
