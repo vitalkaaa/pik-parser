@@ -1,16 +1,11 @@
 from datetime import datetime
+from pprint import pprint
 
+from flask_mongoengine import Document
 from mongoengine import IntField, ReferenceField, DateTimeField, \
-    StringField, EmbeddedDocument, EmbeddedDocumentListField, connect, ListField, DictField
+    StringField, ListField, DictField
 
 from web.models.projects import Projects
-from flask_mongoengine import Document
-
-
-class FlatCheck(EmbeddedDocument):
-    check_at = DateTimeField(required=True)
-    status = StringField(required=True)
-    price = IntField(required=True)
 
 
 class Flats(Document):
@@ -26,19 +21,22 @@ class Flats(Document):
     house = StringField(required=True)
     flat_plan_img = StringField()
 
-    last_check_at = DateTimeField(required=True)
-    last_price = IntField(required=True)
-    last_status = StringField(required=True)
-
     checks = ListField(DictField(), required=True, default=list())
 
     @staticmethod
     def create(flatd, check):
         project = Projects.objects(project_id=flatd.pop('project_id')).first()
 
+        flatd.pop('last_price')
+        flatd.pop('last_status')
         if flatd.get('settlement_date'):
             flatd['settlement_date'] = datetime.strptime(flatd.pop('settlement_date'), '%Y-%m-%d')
-        Flats(**flatd, project=project, checks=[check], found_at=check['check_at'], last_check_at=check['check_at']).save()
+        Flats(**flatd, project=project, checks=[check], found_at=check['check_at']).save()
+
+    @staticmethod
+    def up_to_date(flat, check):
+        flat.checks.append(check)
+        flat.save()
 
     @staticmethod
     def create_or_update(flatd):
@@ -50,9 +48,59 @@ class Flats(Document):
             Flats.create(flatd=flatd, check=check)
             return {'status': 'created'}
         else:
-            f.checks.append(check)
-            f.last_check_at = check['check_at']
-            f.last_status = check['status']
-            f.last_price = check['price']
-            f.save()
+            Flats.up_to_date(flat=f, check=check)
             return {'status': 'updated'}
+
+    @staticmethod
+    def get_contexts(project_id=None):
+        contexts = list()
+
+        if project_id is not None:
+            flats = Flats.objects(project=project_id).all()
+        else:
+            flats = Flats.objects().all()
+
+        project_context = Projects.get_context(project_id)
+        for flat in flats:
+            contexts.append({
+                'flat_id': flat.flat_id,
+                'project': project_context,
+                'section_id': flat.section_id,
+                'area': flat.area,
+                'floor': flat.floor,
+                'rooms': flat.rooms,
+                'address': flat.address,
+                'settlement_date': str(flat.settlement_date.isoformat()) if flat.settlement_date else '',
+                'house': flat.house,
+                'flat_plan_img': flat.flat_plan_img,
+                'last_price': flat.checks[-1]['price'],
+                'last_check_at': str(flat['checks'][-1]['check_at'].isoformat()),
+                'last_status': flat['checks'][-1]['status'],
+                'dates': [str(check['check_at'].isoformat()) for check in flat['checks']],
+                'prices': [check['price'] for check in flat['checks']],
+                'statuses': [check['status'] for check in flat['checks']],
+            })
+        return contexts
+
+    @staticmethod
+    def get_context(flat_id):
+        flat = Flats.objects(flat_id=flat_id).all()
+        project_context = Projects.get_context(flat.project)
+        return {
+                'flat_id': flat.flat_id,
+                'project': project_context,
+                'section_id': flat.section_id,
+                'area': flat.area,
+                'floor': flat.floor,
+                'rooms': flat.rooms,
+                'address': flat.address,
+                'settlement_date': str(flat.settlement_date.isoformat()) if flat.settlement_date else '',
+                'house': flat.house,
+                'flat_plan_img': flat.flat_plan_img,
+                'last_price': flat.checks[-1]['price'],
+                'last_check_at': str(flat['checks'][-1]['check_at'].isoformat()),
+                'last_status': flat['checks'][-1]['status'],
+                'dates': [str(check['check_at'].isoformat()) for check in flat['checks']],
+                'prices': [check['price'] for check in flat['checks']],
+                'statuses': [check['status'] for check in flat['checks']],
+            }

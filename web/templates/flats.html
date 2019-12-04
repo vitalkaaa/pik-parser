@@ -1,105 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link href="https://cdn.fancygrid.com/fancy.min.css" rel="stylesheet">
-    <script src="https://cdn.fancygrid.com/fancy.min.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script src="/static/js/fancy.min.js"></script>
+    <script src="/static/js/jquery.sparkline.min.js"></script>
+    <script src="/static/js/highcharts.js"></script>
+    <script src="/static/js/highchart-gray-theme.js"></script>
     <script>Fancy.MODULESDIR="https://cdn.fancygrid.com/modules/";</script>
 </head>
 <body>
-
-<div id="container"></div>
-
-<script>
-
-
-
-    var data = [
-            {% for flat in flats %}
-                {
-                    "project_name": "{{ flat.project.name }}",
-                    "section": "{{ flat.section }}",
-                    "flat_id": {{ flat.flat_id }},
-                    "area": {{ flat.area }},
-                    "floor": {{ flat.floor }},
-                    "rooms": {{ flat.rooms }},
-                    "address": "{{ flat.address }}",
-                    "settlement_date": "{{ flat.settlement_date }}",
-                    "house": "{{ flat.house }}",
-                    "last_check_at": "{{ flat.last_check_at }}",
-                    "last_status": "{{ flat.last_status }}",
-                    "last_price": {{ flat.last_price }},
-
-                },
-            {% endfor %}
-        ]
-    document.addEventListener("DOMContentLoaded", function() {
-      new FancyGrid({
-        title: 'Квартиры',
-        renderTo: 'container',
-        width: 1000,
-        height: 700,
-        data: data,
-        theme: 'gray',
-        selModel: 'row',
-
-        events: [],
-
-        defaults: {
-          type: 'string',
-          sortable: true,
-          editable: false,
-          resizable: false,
-          align: 'center',
-          cellAlign: 'center'
-        },
-
-        expander: {
-          tpl: [
-            '<div style="float: left;">',
-              '<b>URL:</b> <a href={url}>{url}</a>',
-            '</div>'
-          ].join(""),
-          dataFn: function(grid, data){
-            return data;
-          }
-        },
-
-        columns: [{
-          index: 'project_name',
-          title: 'Название проекта',
-          flex: 1,
-        },{
-          index: 'last_price',
-          title: 'Цена',
-          flex: 1,
-          type: 'number'
-        },{
-          index: 'area',
-          title: 'Площадь',
-          flex: 1,
-          type: 'number'
-        },{
-          index: 'last_status',
-          title: 'Статус',
-          flex: 1,
-        }, {
-          index: 'last_check_at',
-          title: 'Последнее обновление',
-          flex: 1,
-          type: 'date',
-          sortable: false,
-          format: {
-            read: 'Y-m-d',
-          },
-        }]
-
-      });
-    });
-
-</script>
-
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/grids.js"></script>
+    <div id="container"></div>
+    <script>renderFlatsGrid({{ project_id }})</script>
 
 </body>
 </html>

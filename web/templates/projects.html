@@ -3,121 +3,25 @@
     <meta charset="UTF-8">
     <title>Title</title>
 
-
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
     <script src="/static/js/fancy.min.js"></script>
     <script src="/static/js/jquery.sparkline.min.js"></script>
-
     <script src="/static/js/highcharts.js"></script>
     <script src="/static/js/highchart-gray-theme.js"></script>
-    <script>Fancy.MODULESDIR="https://cdn.fancygrid.com/modules/";</script>
+    <script src="/static/js/jquery.modal.min.js"></script>
 
+    <link rel="stylesheet" href="/static/css/jquery.modal.min.css" />
+
+    <script>Fancy.MODULESDIR="https://cdn.fancygrid.com/modules/";</script>
 </head>
 <body>
-
-<div id="container"></div>
-
-
-
-<link href="/static/css/style.css" rel="stylesheet">
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-      new FancyGrid({
-        title: 'Проекты',
-        renderTo: 'container',
-        width: 1000,
-        height: 'fit',
-        trackOver: true,
-        cellHeight: 75,
-        columnLines: false,
-
-        data: [
-          {% for project in Projects.objects().all() %}
-            {
-              "name": "{{ project.name }}",
-              "url": "{{ project.url }}",
-              "project_image": "{{ project.project_image }}",
-              "last_check_at": "{{ project.last_check_at }}",
-              "last_flats": "{{ project.last_flats }}",
-              "project_img": "{{ project.project_img }}",
-              "flats": [
-                {% for check in project.checks %}
-                   {{ check.flats }},
-                {% endfor %}
-              ]
-             },
-          {% endfor %}
-        ],
-
-        theme: 'gray',
-        selModel: {
-          type: 'row',
-         },
-
-        events: [],
-
-        defaults: {
-          type: 'string',
-          sortable: true,
-          editable: false,
-          resizable: false,
-          align: 'center',
-          cellAlign: 'center'
-        },
-
-        expander: {
-          tpl: [
-            '<div style="float: left;">',
-              '<b>Ссылка на проект:</b> <a href={url}>{url}</a>',
-            '</div>'
-          ].join(""),
-          dataFn: function(grid, data){
-            return data;
-          }
-        },
-
-        columns: [{
-          type: 'expand',
-          locked: true,
-        },{
-          index: 'project_img',
-          title: 'Фото',
-          type: 'image',
-          cls: 'photo',
-          flex: 1,
-          width: 100,
-        },{
-          index: 'name',
-          title: 'Название',
-          flex: 1,
-        }, {
-          index: 'last_flats',
-          title: 'Количество квартир',
-          width: 150,
-          type: 'number',
-        }, {
-          index: 'flats',
-          title: 'Количество квартир',
-          type: 'sparklineline',
-          width: 150,
-        }, {
-          index: 'last_check_at',
-          title: 'Последнее обновление',
-          flex: 1,
-          type: 'date',
-          sortable: false,
-          format: {
-            read: 'Y-m-d',
-          },
-        }]
-      });
-    });
-
-</script>
-
+    <link href="/static/css/style.css" rel="stylesheet">
+    <script type="text/javascript" src="/static/js/grids.js"></script>
+    <div id="container"></div>
+    <div id="project-info" class="modal"></div>
+    <script>renderProjectsGrid();</script>
 
 </body>
 </html>

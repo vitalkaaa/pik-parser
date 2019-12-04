@@ -6,7 +6,7 @@ from pprint import pprint
 import requests
 from mongoengine import connect
 
-from web.models import ProjectCheck, Projects, FlatCheck, Flats
+from web.models import Projects, Flats
 
 
 class Parser:
@@ -41,7 +41,7 @@ class Parser:
                     'url': 'https://pik.ru' + project['url'],
                     'name': project['name'],
                     'project_img': project['img']['100'],
-                    'last_flats': flats_json.get('count', 0),
+                    'flats': flats_json.get('count', 0),
                 })
 
         self.log.info(f'Got {len(self.projects)} projects')
@@ -50,7 +50,7 @@ class Parser:
         self.log.info('Getting flats...')
 
         for project in self.projects:
-            for page in range(1, project['last_flats'] // 50 + 2):
+            for page in range(1, project['flats'] // 50 + 2):
                 flats_json = requests.get(self.FLATS_API_URL % (project['project_id'], page)).json()
                 for flat in flats_json['flats']:
                     self.flats.append({
