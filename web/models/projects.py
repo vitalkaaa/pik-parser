@@ -53,12 +53,12 @@ class Projects(Document):
                 'flats': [check['flats'] for check in project['checks']],
                 'dates': [str(check['check_at'].isoformat()) for check in project['checks']],
             })
-        return contexts
+        return dict(data=contexts)
 
     @staticmethod
     def get_context(project_id):
         project = Projects.objects(project_id=project_id).first()
-        return {
+        return dict(data={
             'project_id': project_id,
             'name': project.name,
             'url': project.url,
@@ -67,4 +67,4 @@ class Projects(Document):
             'last_flats': project['checks'][-1]['flats'],
             'flats': [check['flats'] for check in project['checks']],
             'dates': [str(check['check_at'].isoformat()) for check in project['checks']],
-        }
+        })

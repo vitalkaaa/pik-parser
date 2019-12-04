@@ -9,26 +9,31 @@ bp = Blueprint("projects", __name__)
 
 @bp.route('/api/projects')
 def api_projects():
-    return json.dumps(dict(data=Projects.get_contexts()))
+    """Информация о проектах"""
+    return json.dumps(Projects.get_contexts())
 
 
 @bp.route('/api/flats')
 def api_flats():
-    return json.dumps(dict(data=Flats.get_contexts()))
+    """Информация о всех квартирах"""
+    return json.dumps(Flats.get_contexts())
 
 
 @bp.route('/api/flats/<int:project_id>')
 def api_flats_by_project(project_id):
-    return json.dumps(dict(data=Flats.get_contexts(project_id=project_id)))
+    """Информация о квартирах в проекте"""
+    return json.dumps(Flats.get_contexts(project_id=project_id))
 
 
 @bp.route('/projects')
 def projects():
+    """Рендер страницы проектов"""
     return render_template('projects.html')
 
 
 @bp.route('/projects/<int:project_id>')
 def flats(project_id):
+    """Рендер страницы квартир проектв"""
     project = Projects.objects(project_id=project_id)[0]
     if project is not None:
         return render_template('flats.html', project_id=project_id)

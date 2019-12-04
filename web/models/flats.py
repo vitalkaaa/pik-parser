@@ -80,13 +80,13 @@ class Flats(Document):
                 'prices': [check['price'] for check in flat['checks']],
                 'statuses': [check['status'] for check in flat['checks']],
             })
-        return contexts
+        return dict(data=contexts)
 
     @staticmethod
     def get_context(flat_id):
         flat = Flats.objects(flat_id=flat_id).all()
         project_context = Projects.get_context(flat.project)
-        return {
+        return dict(data={
                 'flat_id': flat.flat_id,
                 'project': project_context,
                 'section_id': flat.section_id,
@@ -103,4 +103,4 @@ class Flats(Document):
                 'dates': [str(check['check_at'].isoformat()) for check in flat['checks']],
                 'prices': [check['price'] for check in flat['checks']],
                 'statuses': [check['status'] for check in flat['checks']],
-            }
+            })
