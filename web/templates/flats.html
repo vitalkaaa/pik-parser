@@ -1,24 +1,7 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+{% extends "index.html" %}
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous"></script>
-    <script src="/static/js/fancy.min.js"></script>
-    <script src="/static/js/jquery.sparkline.min.js"></script>
-    <script src="/static/js/highcharts.js"></script>
-    <script src="/static/js/highchart-gray-theme.js"></script>
-    <script>Fancy.MODULESDIR="https://cdn.fancygrid.com/modules/";</script>
-</head>
-<body>
-    <link href="/static/css/style.css" rel="stylesheet">
-    <script type="text/javascript" src="/static/js/grids.js"></script>
-
-
-    <div id="container"></div>
-    <script>renderFlatsGrid({{ project_id }})</script>
-
-</body>
-</html>
+{% block content %}
+    <script>
+        renderFlatsGrid({{ project_id }})
+    </script>
+{% endblock %}

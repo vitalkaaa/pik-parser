@@ -60,7 +60,7 @@ class Flats(Document):
         else:
             flats = Flats.objects().all()
 
-        project_context = Projects.get_context(project_id)
+        project_context = Projects.get_context(project_id)['data']
         for flat in flats:
             contexts.append({
                 'flat_id': flat.flat_id,
@@ -85,7 +85,7 @@ class Flats(Document):
     @staticmethod
     def get_context(flat_id):
         flat = Flats.objects(flat_id=flat_id).all()
-        project_context = Projects.get_context(flat.project)
+        project_context = Projects.get_context(flat.project)['data']
         return dict(data={
                 'flat_id': flat.flat_id,
                 'project': project_context,

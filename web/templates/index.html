@@ -25,43 +25,15 @@
     <script type="text/javascript" src="/static/js/grids.js"></script>
 
     <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Все проекты</a>
+      <a class="navbar-brand" href="/projects">Все проекты</a>
     </nav>
 
-    <div id="container"></div>
+    <div id="grid-container"></div>
 
-
-    <div id="project-info" class="modal">
-
-        <div class="container">
-            <div class="row mt-5">
-                <div class="col-sm-6 col-md-4" id="project-photo-modal">
-                </div>
-            <div class="col-6 col-md-7 offset-md-1">
-                <p class="field"><b>Ссылка на проект: </b><a id="link"></a></p>
-                <p class="field" id="flats-left"></p>
-                <p class="field" id="last-check"></p>
-            </div>
-          </div>
-          <div class="row mt-5">
-            <div class="col">
-                Figure will be here soon!
-            </div>
-          </div>
-          <div class="row mt-5">
-              <div class="col-sm-12 text-center">
-                  <a class="btn btn-secondary" id="flat-page-btn"> Посмотреть квартиры </a>
-              </div>
-          </div>
-        </div>
-
-
-    </div>
-
-
+    {% include 'modal.html' %}
     {% block content %}{% endblock %}
 
-    <script>renderProjectsGrid();</script>
+    <script type="text/javascript" src="/static/js/jquery.canvasjs.min.js"></script>
 
 </body>
 </html>

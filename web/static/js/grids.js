@@ -1,24 +1,122 @@
-function openProjectsModal(projectData) {
+function drawProjectChart(xx, yy){
+    var dataPoints = [];
 
-    $("#link").prop("href", projectData.url)
+    var options =  {
+        animationEnabled: true,
+        theme: "light2",
+
+        axisX: {
+            valueFormatString: "DD MMM YYYY",
+        },
+        axisY: {
+            title: "Количество квартир",
+            titleFontSize: 14,
+            gridColor: "gray",
+            gridThickness: 0,
+            includeZero: false
+        },
+        data: [{
+            type: "line",
+            yValueFormatString: "#,###",
+            dataPoints: dataPoints
+        }]
+    };
+
+    for (var i=0; i<xx.length; i++) {
+        dataPoints.push({
+            x: new Date(Date.parse(xx[i])),
+            y: yy[i]
+        })
+    }
+
+    console.log(dataPoints)
+
+    $("#flat-number-char-container").CanvasJSChart(options);
+}
+
+
+
+function drawFloatCostChart(xx, yy){
+    var dataPoints = [];
+
+    var options =  {
+        animationEnabled: true,
+        theme: "light2",
+
+        axisX: {
+            valueFormatString: "DD MMM YYYY",
+        },
+        axisY: {
+            title: "Цена квартиры",
+            titleFontSize: 14,
+            gridColor: "gray",
+            gridThickness: 0,
+            includeZero: false
+
+        },
+        data: [{
+            type: "line",
+            yValueFormatString: "Р#,###.##",
+            dataPoints: dataPoints
+        }]
+    };
+
+    for (var i=0; i<xx.length; i++) {
+        dataPoints.push({
+            x: new Date(Date.parse(xx[i])),
+            y: yy[i]
+        })
+    }
+
+    console.log(dataPoints)
+
+    $("#flat-price-chart-container").CanvasJSChart(options);
+}
+
+
+function openProjectModal(projectData) {
+    $("#project-link").prop("href", projectData.url)
+    $("#project-link").text(projectData.name)
     $("#project-photo-modal").html("<img src='" + projectData.project_img + "'></img>")
-    $("#link").text(projectData.name)
     $("#flats-left").html("<b>Квартир в продаже:</b> " + projectData.last_flats)
     $("#last-check").html("<b>Последняя проверка:</b> " + projectData.last_check_at.split('T')[0])
+    $("#open-flat-page-btn").prop("href", "/projects/" + projectData.project_id)
 
-    $("#flat-page-btn").prop("href", "/projects/" + projectData.project_id)
-
-    $("#project-info").modal({
+    $("#modal-window").modal({
       fadeDuration: 100,
       width: 600
     });
 
+    $("#flat-price-chart").prop('hidden', true);
+
+    drawProjectChart(projectData.dates, projectData.flats);
+
     $.getJSON( "/api/flats/" + projectData.project_id, function( flatsData ) {
         console.log( projectData );
         console.log( flatsData );
-
-
     });
+}
+
+function openFlatModal(floatData) {
+    console.log(floatData)
+    $("#project-link").prop("href", floatData.project.url)
+    $("#project-link").text(floatData.project.name)
+    $("#project-photo-modal").html("<img src='" + floatData.project.project_img + "'></img>")
+    $("#flats-left").html("<b>Квартир в продаже:</b> " + floatData.project.last_flats)
+    $("#last-check").html("<b>Последняя проверка:</b> " + floatData.project.last_check_at.split('T')[0])
+    $("#open-flat-page-btn").prop("href", "/projects/" + floatData.project.project_id)
+
+    $("#modal-window").modal({
+      fadeDuration: 100,
+      width: 600
+    });
+
+    $("#flat-number-chart").prop('hidden', true);
+    $("#open-flat-page").prop('hidden', true);
+
+    console.log(floatData.dates, floatData.prices)
+    drawFloatCostChart(floatData.dates, floatData.prices);
+
 
 }
 
@@ -26,7 +124,7 @@ function renderProjectsGrid(){
     document.addEventListener("DOMContentLoaded", function() {
         new FancyGrid({
             title: 'Проекты',
-            renderTo: 'container',
+            renderTo: 'grid-container',
             width: 'fit',
             height: 'fit',
             trackOver: true,
@@ -47,7 +145,7 @@ function renderProjectsGrid(){
 
             events: [{
                 cellclick: function(grid, o){
-                    openProjectsModal(o.data);
+                    openProjectModal(o.data);
                 }
             }],
 
@@ -101,7 +199,7 @@ function renderFlatsGrid(project_id){
     document.addEventListener("DOMContentLoaded", function() {
         new FancyGrid({
             title: 'Квартиры',
-            renderTo: 'container',
+            renderTo: 'grid-container',
             width: 'fit',
             height: 'fit',
             trackOver: true,
@@ -120,7 +218,11 @@ function renderFlatsGrid(project_id){
                 type: 'row',
             },
 
-            events: [],
+            events: [{
+                cellclick: function(grid, o){
+                    openFlatModal(o.data);
+                }
+            }],
 
             defaults: {
                 type: 'string',

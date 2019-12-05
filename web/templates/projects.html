@@ -1,67 +1,7 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Title</title>
+{% extends "index.html" %}
 
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
-            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-            crossorigin="anonymous"></script>
-    <script src="/static/js/fancy.min.js"></script>
-    <script src="/static/js/jquery.sparkline.min.js"></script>
-    <script src="/static/js/highcharts.js"></script>
-    <script src="/static/js/highchart-gray-theme.js"></script>
-    <script src="/static/js/bootstrap/bootstrap.min.js"></script>
-    <script src="/static/js/jquery.modal.min.js"></script>
-    <script>Fancy.MODULESDIR="https://cdn.fancygrid.com/modules/";</script>
-
-
-    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/jquery.modal.min.css" />
-</head>
-
-<body>
-    <link href="/static/css/style.css" rel="stylesheet">
-    <script type="text/javascript" src="/static/js/grids.js"></script>
-
-    <nav class="navbar navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Все проекты</a>
-    </nav>
-
-    <div id="container"></div>
-
-
-    <div id="project-info" class="modal">
-
-        <div class="container">
-            <div class="row mt-5">
-                <div class="col-sm-6 col-md-4" id="project-photo-modal">
-                </div>
-            <div class="col-6 col-md-7 offset-md-1">
-                <p class="field"><b>Ссылка на проект: </b><a id="link"></a></p>
-                <p class="field" id="flats-left"></p>
-                <p class="field" id="last-check"></p>
-            </div>
-          </div>
-          <div class="row mt-5">
-            <div class="col">
-                Figure will be here soon!
-            </div>
-          </div>
-          <div class="row mt-5">
-              <div class="col-sm-12 text-center">
-                  <a class="btn btn-secondary" id="flat-page-btn"> Посмотреть квартиры </a>
-              </div>
-          </div>
-        </div>
-
-
-    </div>
-
-
-
-
-    <script>renderProjectsGrid();</script>
-
-</body>
-</html>
+{% block content %}
+    <script>
+        renderProjectsGrid();
+    </script>
+{% endblock %}
