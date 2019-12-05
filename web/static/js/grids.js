@@ -166,7 +166,6 @@ function renderProjectsGrid(){
                 type: 'image',
                 cls: 'photo',
                 flex: 1,
-                width: 100,
             },{
                 index: 'name',
                 title: 'Название',
@@ -174,13 +173,13 @@ function renderProjectsGrid(){
             }, {
                 index: 'last_flats',
                 title: 'Количество квартир',
-                width: 150,
                 type: 'number',
+                flex: 1
             }, {
                 index: 'flats',
                 title: 'Количество квартир',
                 type: 'sparklineline',
-                width: 150,
+                flex: 1
             }, {
                 index: 'last_check_at',
                 title: 'Последнее обновление',
@@ -240,7 +239,6 @@ function renderFlatsGrid(project_id){
                 type: 'image',
                 cls: 'photo',
                 flex: 1,
-                width: 100,
             },{
                 index: 'area',
                 title: 'Площадь',
@@ -249,18 +247,18 @@ function renderFlatsGrid(project_id){
             }, {
                 index: 'last_price',
                 title: 'Цена',
-                width: 150,
+                flex: 1,
                 type: 'number',
             }, {
                 index: 'rooms',
                 title: 'Количество комнат',
-                width: 150,
+                flex: 1,
                 type: 'number',
             }, {
                 index: 'prices',
                 title: 'Динамика цен',
                 type: 'sparklineline',
-                width: 150,
+                flex: 1,
             }, {
                 index: 'last_check_at',
                 title: 'Последнее обновление',
