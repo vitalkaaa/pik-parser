@@ -27,6 +27,7 @@ def api_flats_by_project(project_id):
 
 
 @bp.route('/projects')
+@bp.route('/')
 def projects():
     """Рендер страницы проектов"""
     return render_template('projects.html')
