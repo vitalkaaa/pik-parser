@@ -1,1 +1,1 @@
-git pull && docker build -t web . && docker stop web && docker run -d -p 80:8080 -v /root/pik-parser/logs:/app/logs --name web web
+docker run -d --net=host -v /root/pik-parser/logs:/app/logs web

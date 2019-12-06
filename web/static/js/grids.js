@@ -4,7 +4,7 @@ function drawProjectChart(xx, yy){
     var options =  {
         animationEnabled: true,
         theme: "light2",
-
+        height: 200,
         axisX: {
             valueFormatString: "DD MMM YYYY",
         },
@@ -42,7 +42,7 @@ function drawFloatCostChart(xx, yy){
     var options =  {
         animationEnabled: true,
         theme: "light2",
-
+        height: 200,
         axisX: {
             valueFormatString: "DD MMM YYYY",
         },
@@ -143,6 +143,10 @@ function renderProjectsGrid(){
                 type: 'row',
             },
 
+            paging: {
+                pageSize: 10,
+            },
+
             events: [{
                 cellclick: function(grid, o){
                     openProjectModal(o.data);
@@ -166,6 +170,7 @@ function renderProjectsGrid(){
                 type: 'image',
                 cls: 'photo',
                 flex: 1,
+                width: 100,
             },{
                 index: 'name',
                 title: 'Название',
@@ -215,6 +220,10 @@ function renderFlatsGrid(project_id){
 
             selModel: {
                 type: 'row',
+            },
+
+            paging: {
+                pageSize: 10,
             },
 
             events: [{
