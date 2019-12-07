@@ -7,6 +7,7 @@ import requests
 from mongoengine import connect
 
 from web.models import Projects, Flats
+from web.utils import get_logger
 
 
 class Parser:
@@ -14,18 +15,10 @@ class Parser:
     FLATS_API_URL = "https://api.pik.ru/v2/flat?block_id=%s&type=1,2&page=%s"
     LOGGER_FORMAT = '%(asctime)s:%(name)s:%(levelname)s - %(message)s'
 
-    def __init__(self, enable_logging=True):
+    def __init__(self):
         self.projects = []
         self.flats = []
-
-        self.log = logging.getLogger('PARSER')
-        if enable_logging:
-            self.log.setLevel(logging.INFO)
-            handler = logging.StreamHandler(sys.stdout)
-            handler.setLevel(logging.INFO)
-            formatter = logging.Formatter(self.LOGGER_FORMAT)
-            handler.setFormatter(formatter)
-            self.log.addHandler(handler)
+        self.log = get_logger('parser')
 
     def __download_projects(self):
         self.log.info('Getting projects...')
@@ -43,6 +36,7 @@ class Parser:
                     'project_img': project['img']['100'],
                     'flats': flats_json.get('count', 0),
                 })
+            break
 
         self.log.info(f'Got {len(self.projects)} projects')
 
@@ -110,4 +104,4 @@ if __name__ == '__main__':
 
     parser = Parser()
     parser.run()
-    parser.store()
+    # parser.store()

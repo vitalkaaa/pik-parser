@@ -8,7 +8,7 @@ from web.models import Flats, Projects
 from web.utils import get_logger
 
 bp = Blueprint("projects", __name__)
-log = get_logger()
+log = get_logger('app')
 
 
 @bp.route('/api/projects')
