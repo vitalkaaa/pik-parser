@@ -38,3 +38,9 @@
     height: auto;
 }
 
+.prj-info-btn {
+    padding: 5px;
+    float: inherit;
+    margin-top: -10px;
+}
+

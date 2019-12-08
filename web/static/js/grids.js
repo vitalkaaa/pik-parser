@@ -145,13 +145,14 @@ function renderProjectsGrid(){
 
             paging: {
                 pageSize: 10,
+                pageSizeData: [10, 20, 50, 100]
             },
 
-            events: [{
-                cellclick: function(grid, o){
-                    openProjectModal(o.data);
-                }
-            }],
+//            events: [{
+//                cellclick: function(grid, o){
+//                    openProjectModal(o.data);
+//                }
+//            }],
 
             defaults: {
                 type: 'string',
@@ -194,6 +195,17 @@ function renderProjectsGrid(){
                 format: {
                     read: 'Y-m-d',
                 },
+            }, {
+                type: 'action',
+                flex: 1,
+                title: '',
+                items: [{
+                    text: 'Подробнее',
+                    cls: 'btn  btn-success prj-info-btn',
+                    handler: function(grid, o){
+                        openProjectModal(o.data);
+                    }
+                }]
             }]
          });
     });
@@ -224,13 +236,14 @@ function renderFlatsGrid(project_id){
 
             paging: {
                 pageSize: 10,
+                pageSizeData: [10, 20, 50, 100]
             },
 
-            events: [{
-                cellclick: function(grid, o){
-                    openFlatModal(o.data);
-                }
-            }],
+//            events: [{
+//                cellclick: function(grid, o){
+//                    openFlatModal(o.data);
+//                }
+//            }],
 
             defaults: {
                 type: 'string',
@@ -258,6 +271,10 @@ function renderFlatsGrid(project_id){
                 title: 'Цена',
                 flex: 1,
                 type: 'number',
+                render: function(o){
+                    o.value = o.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    return o
+                },
             }, {
                 index: 'rooms',
                 title: 'Количество комнат',
@@ -277,6 +294,17 @@ function renderFlatsGrid(project_id){
                 format: {
                     read: 'Y-m-d',
                 },
+            }, {
+                type: 'action',
+                flex: 1,
+                title: '',
+                items: [{
+                    text: 'Подробнее',
+                    cls: 'btn  btn-success prj-info-btn',
+                    handler: function(grid, o){
+                        openFlatModal(o.data);
+                    }
+                }]
             }]
          });
     });
