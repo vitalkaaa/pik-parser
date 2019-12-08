@@ -5,7 +5,7 @@ import logging
 from flask import Blueprint, render_template, request
 
 from web.models import Flats, Projects
-from web.utils import get_logger
+from web.utils import get_logger, nocache
 
 bp = Blueprint("projects", __name__)
 log = get_logger('app')
@@ -24,6 +24,7 @@ def api_flats():
 
 
 @bp.route('/api/flats/<int:project_id>')
+@nocache
 def api_flats_by_project(project_id):
     """Информация о квартирах в проекте"""
     return json.dumps(Flats.get_contexts(project_id=project_id))

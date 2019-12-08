@@ -297,7 +297,7 @@ function renderFlatsGrid(project_id){
             }, {
                 type: 'action',
                 flex: 1,
-                title: '',
+                title: '45678',
                 items: [{
                     text: 'Подробнее',
                     cls: 'btn  btn-success prj-info-btn',
