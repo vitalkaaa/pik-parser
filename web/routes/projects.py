@@ -24,7 +24,6 @@ def api_flats():
 
 
 @bp.route('/api/flats/<int:project_id>')
-@nocache
 def api_flats_by_project(project_id):
     """Информация о квартирах в проекте"""
     return json.dumps(Flats.get_contexts(project_id=project_id))
@@ -32,6 +31,7 @@ def api_flats_by_project(project_id):
 
 @bp.route('/projects')
 @bp.route('/')
+@nocache
 def projects():
     """Рендер страницы проектов"""
     log.info(f'{request.remote_addr} /projects')
@@ -39,6 +39,7 @@ def projects():
 
 
 @bp.route('/projects/<int:project_id>')
+@nocache
 def flats(project_id):
     """Рендер страницы квартир проекта"""
     log.info(f'{request.remote_addr} /projects/{project_id}')
