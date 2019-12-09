@@ -125,6 +125,7 @@ function renderProjectsGrid(){
         new FancyGrid({
             title: 'Проекты',
             renderTo: 'grid-container',
+            textSelection: true,
             width: 'fit',
             height: 'fit',
             trackOver: true,
@@ -222,6 +223,7 @@ function renderFlatsGrid(project_id){
         new FancyGrid({
             title: 'Квартиры',
             renderTo: 'grid-container',
+            textSelection: true,
             width: 'fit',
             height: 'fit',
             trackOver: true,
