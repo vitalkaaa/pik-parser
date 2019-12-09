@@ -124,7 +124,7 @@ function renderProjectsGrid(){
     document.addEventListener("DOMContentLoaded", function() {
         new FancyGrid({
             title: 'Проекты',
-            renderOuter: 'grid-container',
+            renderTo: 'grid-container',
             textSelection: true,
             width: 'fit',
             height: 'fit',
@@ -141,9 +141,9 @@ function renderProjectsGrid(){
               }
             },
 
-            selModel: {
-                type: 'row',
-            },
+//            selModel: {
+//                type: 'row',
+//            },
 
             paging: {
                 pageSize: 20,
@@ -240,9 +240,9 @@ function renderFlatsGrid(project_id){
               }
             },
 
-            selModel: {
-                type: 'row',
-            },
+//            selModel: {
+//                type: false,
+//            },
 
             paging: {
                 pageSize: 20,
