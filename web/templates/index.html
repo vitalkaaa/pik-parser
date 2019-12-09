@@ -39,15 +39,16 @@
     <link rel="stylesheet" href="/static/css/jquery.modal.min.css" />
 </head>
 
-<body>
+<body style="max-height: 100% !important;">
     <link href="/static/css/style.css" rel="stylesheet">
     <script type="text/javascript" src="/static/js/grids.js"></script>
+
 
     <nav class="navbar navbar-dark bg-dark">
       <a class="navbar-brand" href="/projects">Все проекты</a>
     </nav>
 
-    <div id="grid-container" class="container-fluid" style="height:100%;overflow:auto;max-width:99%; "></div>
+    <div id="grid-container" class="container-fluid" style="max-height:90%;height:90%;overflow:auto;max-width:99%; "></div>
 
     {% include 'modal.html' %}
     {% block content %}{% endblock %}

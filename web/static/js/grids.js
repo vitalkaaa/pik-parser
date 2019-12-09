@@ -127,7 +127,7 @@ function renderProjectsGrid(){
             renderOuter: 'grid-container',
             textSelection: true,
             width: 'fit',
-            height: 750,
+            height: 'fit',
             trackOver: true,
             nativeScroller: true,
             cellHeight: 75,
@@ -146,7 +146,7 @@ function renderProjectsGrid(){
             },
 
             paging: {
-                pageSize: 10,
+                pageSize: 20,
                 pageSizeData: [10, 20, 50, 100]
             },
 
@@ -227,7 +227,7 @@ function renderFlatsGrid(project_id){
             textSelection: true,
             nativeScroller: true,
             width: 'fit',
-            height: 750,
+            height: 'fit',
             trackOver: true,
             cellHeight: 75,
             columnLines: false,
@@ -245,7 +245,7 @@ function renderFlatsGrid(project_id){
             },
 
             paging: {
-                pageSize: 10,
+                pageSize: 20,
                 pageSizeData: [10, 20, 50, 100]
             },
 
