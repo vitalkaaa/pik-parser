@@ -124,7 +124,7 @@ function renderProjectsGrid(){
     document.addEventListener("DOMContentLoaded", function() {
         new FancyGrid({
             title: 'Проекты',
-            renderTo: 'grid-container',
+            renderOuter: 'grid-container',
             textSelection: true,
             width: 'fit',
             height: 'fit',
