@@ -184,7 +184,7 @@ function renderProjectsGrid(){
                         'Равно: =30',
                         'Больше: >30',
                         'Меньше: <30',
-                    ].join("")
+                    ].join(" | ")
                 }
             }, {
                 index: 'flats',
@@ -274,7 +274,7 @@ function renderFlatsGrid(project_id){
                     header: true,
                     emptyText: '',
                     tip: [
-                    ].join("")
+                    ].join(" | ")
                 }
             },{
                 index: 'area',
@@ -288,7 +288,7 @@ function renderFlatsGrid(project_id){
                         'Равно: =30',
                         'Больше: >30',
                         'Меньше: <30',
-                    ].join("")
+                    ].join(" | ")
                 }
             },{
                 index: 'last_price_per_m',
@@ -307,7 +307,7 @@ function renderFlatsGrid(project_id){
                         'Равно: =100000',
                         'Больше: >100000',
                         'Меньше: <100000',
-                    ].join("")
+                    ].join(" | ")
                 }
             }, {
                 index: 'last_price',
@@ -325,7 +325,7 @@ function renderFlatsGrid(project_id){
                         'Равно: =1000000',
                         'Больше: >1000000',
                         'Меньше: <1000000',
-                    ].join("")
+                    ].join(" | ")
                 }
             }, {
                 index: 'rooms',
@@ -339,7 +339,7 @@ function renderFlatsGrid(project_id){
                         'Равно: =2',
                         'Больше: >2',
                         'Меньше: <2',
-                    ].join("")
+                    ].join(" | ")
                 }
             }, {
                 index: 'prices',
