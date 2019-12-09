@@ -270,12 +270,6 @@ function renderFlatsGrid(project_id){
                     o.value = o.value.house
                     return o
                 },
-                filter: {
-                    header: true,
-                    emptyText: '',
-                    tip: [
-                    ].join(" | ")
-                }
             },{
                 index: 'area',
                 title: 'Площадь',
