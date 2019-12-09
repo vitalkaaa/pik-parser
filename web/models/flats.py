@@ -74,6 +74,7 @@ class Flats(Document):
                 'house': flat.house,
                 'flat_plan_img': flat.flat_plan_img,
                 'last_price': flat.checks[-1]['price'],
+                'last_price_per_m': flat.checks[-1]['price']/flat.area,
                 'last_check_at': str(flat['checks'][-1]['check_at'].isoformat()),
                 'last_status': flat['checks'][-1]['status'],
                 'dates': [str(check['check_at'].isoformat()) for check in flat['checks']],

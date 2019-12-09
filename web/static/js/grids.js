@@ -144,15 +144,9 @@ function renderProjectsGrid(){
             },
 
             paging: {
-                pageSize: 10,
+                pageSize: 20,
                 pageSizeData: [10, 20, 50, 100]
             },
-
-//            events: [{
-//                cellclick: function(grid, o){
-//                    openProjectModal(o.data);
-//                }
-//            }],
 
             defaults: {
                 type: 'string',
@@ -162,8 +156,6 @@ function renderProjectsGrid(){
                 align: 'center',
                 cellAlign: 'center'
             },
-
-
 
             columns: [{
                 index: 'project_img',
@@ -176,11 +168,24 @@ function renderProjectsGrid(){
                 index: 'name',
                 title: 'Название',
                 flex: 1,
+                filter: {
+                    header: true,
+                    emptyText: '',
+                }
             }, {
                 index: 'last_flats',
                 title: 'Количество квартир',
                 type: 'number',
-                flex: 1
+                flex: 1,
+                filter: {
+                    header: true,
+                    emptyText: '',
+                    tip: [
+                        'Равно: =30',
+                        'Больше: >30',
+                        'Меньше: <30',
+                    ].join("")
+                }
             }, {
                 index: 'flats',
                 title: 'Количество квартир',
@@ -194,6 +199,7 @@ function renderProjectsGrid(){
                 sortable: false,
                 format: {
                     read: 'Y-m-d',
+                    write: 'd-m-Y',
                 },
             }, {
                 type: 'action',
@@ -235,15 +241,9 @@ function renderFlatsGrid(project_id){
             },
 
             paging: {
-                pageSize: 10,
+                pageSize: 20,
                 pageSizeData: [10, 20, 50, 100]
             },
-
-//            events: [{
-//                cellclick: function(grid, o){
-//                    openFlatModal(o.data);
-//                }
-//            }],
 
             defaults: {
                 type: 'string',
@@ -262,24 +262,85 @@ function renderFlatsGrid(project_id){
                 cls: 'photo',
                 flex: 1,
             },{
+                title: 'Дом',
+                flex: 1,
+                type: 'string',
+                sortable: false,
+                render: function(o){
+                    o.value = o.value.house
+                    return o
+                },
+                filter: {
+                    header: true,
+                    emptyText: '',
+                    tip: [
+                    ].join("")
+                }
+            },{
                 index: 'area',
                 title: 'Площадь',
                 type: 'number',
                 flex: 1,
+                filter: {
+                    header: true,
+                    emptyText: '',
+                    tip: [
+                        'Равно: =30',
+                        'Больше: >30',
+                        'Меньше: <30',
+                    ].join("")
+                }
+            },{
+                index: 'last_price_per_m',
+                title: 'Цена за м²',
+                type: 'number',
+                flex: 1,
+                render: function(o){
+                    o.value = Math.floor(o.value)
+                    o.value = o.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+                    return o
+                },
+                filter: {
+                    header: true,
+                    emptyText: '',
+                    tip: [
+                        'Равно: =100000',
+                        'Больше: >100000',
+                        'Меньше: <100000',
+                    ].join("")
+                }
             }, {
                 index: 'last_price',
                 title: 'Цена',
                 flex: 1,
                 type: 'number',
                 render: function(o){
-                    o.value = o.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    o.value = o.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
                     return o
                 },
+                filter: {
+                    header: true,
+                    emptyText: '',
+                    tip: [
+                        'Равно: =1000000',
+                        'Больше: >1000000',
+                        'Меньше: <1000000',
+                    ].join("")
+                }
             }, {
                 index: 'rooms',
                 title: 'Количество комнат',
                 flex: 1,
                 type: 'number',
+                filter: {
+                    header: true,
+                    emptyText: '',
+                    tip: [
+                        'Равно: =2',
+                        'Больше: >2',
+                        'Меньше: <2',
+                    ].join("")
+                }
             }, {
                 index: 'prices',
                 title: 'Динамика цен',
@@ -293,6 +354,7 @@ function renderFlatsGrid(project_id){
                 sortable: false,
                 format: {
                     read: 'Y-m-d',
+                    write: 'd-m-Y',
                 },
             }, {
                 type: 'action',
