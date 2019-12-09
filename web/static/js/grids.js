@@ -227,7 +227,7 @@ function renderFlatsGrid(project_id){
             textSelection: true,
             nativeScroller: true,
             width: 'fit',
-            height: 'fit',
+            height: 750,
             trackOver: true,
             cellHeight: 75,
             columnLines: false,
