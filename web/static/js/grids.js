@@ -127,7 +127,7 @@ function renderProjectsGrid(){
             renderOuter: 'grid-container',
             textSelection: true,
             width: 'fit',
-            height: 'fit',
+            height: 750,
             trackOver: true,
             nativeScroller: true,
             cellHeight: 75,
