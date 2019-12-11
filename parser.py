@@ -4,7 +4,7 @@ from datetime import datetime
 from pprint import pprint
 
 import requests
-from mongoengine import connect
+from mongoengine import connect,disconnect
 
 from web.models import Projects, Flats
 from web.utils import get_logger
@@ -99,7 +99,8 @@ class Parser:
 
 
 if __name__ == '__main__':
-    connect('pik')
+    disconnect()
+    connect('pik', port=27017, username='pikpikpik', password='pikpikpik')
 
     parser = Parser()
     parser.run()
