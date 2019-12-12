@@ -1,4 +1,4 @@
-function drawProjectChart(xx, yy){
+function drawProjectChart(id, data){
     var dataPoints = [];
 
     var options =  {
@@ -22,21 +22,17 @@ function drawProjectChart(xx, yy){
         }]
     };
 
-    for (var i=0; i<xx.length; i++) {
+    for (var i=0; i<data.dates.length; i++) {
         dataPoints.push({
-            x: new Date(Date.parse(xx[i])),
-            y: yy[i]
+            x: new Date(Date.parse(data.dates[i])),
+            y: data.flats[i]
         })
     }
 
-    console.log(dataPoints)
-
-    $("#flat-number-char-container").CanvasJSChart(options);
+    $("#flat-number-chart-container-" + id).CanvasJSChart(options);
 }
 
-
-
-function drawFloatCostChart(xx, yy){
+function drawFloatCostChart(id, data){
     var dataPoints = [];
 
     var options =  {
@@ -61,64 +57,16 @@ function drawFloatCostChart(xx, yy){
         }]
     };
 
-    for (var i=0; i<xx.length; i++) {
+    for (var i=0; i<data.dates.length; i++) {
         dataPoints.push({
-            x: new Date(Date.parse(xx[i])),
-            y: yy[i]
+            x: new Date(Date.parse(data.dates[i])),
+            y: data.prices[i]
         })
     }
 
-    console.log(dataPoints)
-
-    $("#flat-price-chart-container").CanvasJSChart(options);
+    $("#flat-price-chart-container-" + id).CanvasJSChart(options);
 }
 
-
-function openProjectModal(projectData) {
-    $("#project-link").prop("href", projectData.url)
-    $("#project-link").text(projectData.name)
-    $("#project-photo-modal").html("<img src='" + projectData.project_img + "'></img>")
-    $("#flats-left").html("<b>Квартир в продаже:</b> " + projectData.last_flats)
-    $("#last-check").html("<b>Последняя проверка:</b> " + projectData.last_check_at.split('T')[0])
-    $("#open-flat-page-btn").prop("href", "/projects/" + projectData.project_id)
-
-    $("#modal-window").modal({
-      fadeDuration: 100,
-      width: 600
-    });
-
-    $("#flat-price-chart").prop('hidden', true);
-
-    drawProjectChart(projectData.dates, projectData.flats);
-
-    $.getJSON( "/api/flats/" + projectData.project_id, function( flatsData ) {
-        console.log( projectData );
-        console.log( flatsData );
-    });
-}
-
-function openFlatModal(floatData) {
-    console.log(floatData)
-    $("#project-link").prop("href", floatData.project.url)
-    $("#project-link").text(floatData.project.name)
-    $("#project-photo-modal").html("<img src='" + floatData.project.project_img + "'></img>")
-    $("#flats-left").html("<b>Квартир в продаже:</b> " + floatData.project.last_flats)
-    $("#last-check").html("<b>Последняя проверка:</b> " + floatData.project.last_check_at.split('T')[0])
-    $("#open-flat-page-btn").prop("href", "/projects/" + floatData.project.project_id)
-
-    $("#modal-window").modal({
-      fadeDuration: 100,
-      width: 600
-    });
-
-    $("#flat-number-chart").prop('hidden', true);
-    $("#open-flat-page").prop('hidden', true);
-
-    console.log(floatData.dates, floatData.prices)
-    drawFloatCostChart(floatData.dates, floatData.prices);
-
-
-}
 
 function renderProjectsGrid(){
     document.addEventListener("DOMContentLoaded", function() {
@@ -128,8 +76,8 @@ function renderProjectsGrid(){
             textSelection: true,
             width: 'fit',
             height: 'fit',
-            trackOver: true,
-            nativeScroller: true,
+            trackOver: false,
+            nativeScroller: false,
             cellHeight: 75,
             columnLines: false,
             theme: 'gray',
@@ -141,9 +89,37 @@ function renderProjectsGrid(){
               }
             },
 
-//            selModel: {
-//                type: 'row',
-//            },
+            expander: {
+                tpl: [
+                    '<div class="row mt-5 mb-5" id="flat-number-chart-{project_id}">',
+                        '<div class="col" id="flat-number-chart-container-{project_id}" style="height: 200px;"></div>',
+                        '<div class="col" style="height: 200px;"></div>',
+                    '</div>',
+                    '<div class="row mt-5" id="open-flat-page">',
+                        '<div class="col-sm-12 text-center">',
+                            '<a class="btn btn-secondary" id="open-flat-page-btn"> Посмотреть квартиры </a>',
+                        '</div>',
+                    '</div>',
+                ].join(""),
+                render: function(renderTo, data, columnsWidth){
+                    $(".fancy-grid-expand-row").find(':hidden').remove()
+                    $("#open-flat-page-btn").prop("href", "/projects/" + data.project_id)
+                    drawProjectChart(data.project_id, data)
+                },
+                dataFn: function(grid, data){
+                    return data
+                }
+            },
+
+            events: [{
+              expand: function(grid, group, groupValue) {
+                console.log(group)
+              }
+            }, {
+              collapse: function(grid, group, groupValue) {
+                console.log(grid)
+              }
+            }],
 
             paging: {
                 pageSize: 20,
@@ -160,6 +136,9 @@ function renderProjectsGrid(){
             },
 
             columns: [{
+                type: 'expand',
+                locked: true
+            }, {
                 index: 'project_img',
                 title: 'Фото',
                 type: 'image',
@@ -193,27 +172,6 @@ function renderProjectsGrid(){
                 title: 'Количество квартир',
                 type: 'sparklineline',
                 flex: 1
-            }, {
-                index: 'last_check_at',
-                title: 'Последнее обновление',
-                flex: 1,
-                type: 'date',
-                sortable: false,
-                format: {
-                    read: 'Y-m-d',
-                    write: 'd-m-Y',
-                },
-            }, {
-                type: 'action',
-                flex: 1,
-                title: '',
-                items: [{
-                    text: 'Подробнее',
-                    cls: 'btn  btn-success prj-info-btn',
-                    handler: function(grid, o){
-                        openProjectModal(o.data);
-                    }
-                }]
             }]
          });
     });
@@ -224,7 +182,7 @@ function renderFlatsGrid(project_id){
         new FancyGrid({
             title: 'Квартиры',
             renderTo: 'grid-container',
-            textSelection: true,
+            textSelection: false,
             nativeScroller: true,
             width: 'fit',
             height: 'fit',
@@ -234,15 +192,24 @@ function renderFlatsGrid(project_id){
             theme: 'gray',
 
             data: {
-              proxy: {
-                type: 'rest',
-                url: '/api/flats/' + project_id
-              }
+                proxy: {
+                  type: 'rest',
+                  url: '/api/flats/' + project_id
+                }
             },
 
-//            selModel: {
-//                type: false,
-//            },
+            expander: {
+                tpl: [
+                    '<div class="row mt-5 mb-5" id="flat-price-chart-{flat_id}">',
+                    '<div class="col" id="flat-price-chart-container-{flat_id}" style="height: 200px; width: 100%;"></div>',
+                   '<div class="col" style="height: 200px;"></div>',
+                    '</div>'
+                ].join(""),
+                render: function(renderTo, data, columnsWidth){
+                    $(".fancy-grid-expand-row").find(':hidden').remove()
+                    drawFloatCostChart(data.flat_id, data)
+                }
+            },
 
             paging: {
                 pageSize: 20,
@@ -260,6 +227,9 @@ function renderFlatsGrid(project_id){
 
 
             columns: [{
+                type: 'expand',
+                locked: true
+            },{
                 index: 'flat_plan_img',
                 title: 'Фото',
                 type: 'image',
@@ -344,27 +314,6 @@ function renderFlatsGrid(project_id){
                 title: 'Динамика цен',
                 type: 'sparklineline',
                 flex: 1,
-            }, {
-                index: 'last_check_at',
-                title: 'Последнее обновление',
-                flex: 1,
-                type: 'date',
-                sortable: false,
-                format: {
-                    read: 'Y-m-d',
-                    write: 'd-m-Y',
-                },
-            }, {
-                type: 'action',
-                flex: 1,
-                title: '',
-                items: [{
-                    text: 'Подробнее',
-                    cls: 'btn  btn-success prj-info-btn',
-                    handler: function(grid, o){
-                        openFlatModal(o.data);
-                    }
-                }]
             }]
          });
     });

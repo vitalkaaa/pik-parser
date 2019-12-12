@@ -20,27 +20,6 @@
     padding: 5px;
 }
 
-.photo-modal {
-    float: left;
-    width: 40%;
-    margin-top: 16px;
-    margin-bottom: 16px;
+#open-flat-page-btn{
+    padding: 10px;
 }
-
-.fields {
-    float: right;
-    width: 55%;
-    white-space: nowrap;
-}
-
-.modal {
-    max-width: 650px;
-    height: auto;
-}
-
-.prj-info-btn {
-    padding: 5px;
-    float: inherit;
-    margin-top: -10px;
-}
-
