@@ -8,7 +8,7 @@ function renderProjectsGrid(){
             height: 'fit',
             trackOver: false,
             nativeScroller: false,
-            cellHeight: 75,
+            cellHeight: 100,
             columnLines: false,
             theme: 'gray',
 
@@ -24,8 +24,8 @@ function renderProjectsGrid(){
                     '<div class="row mt-5 mb-5" id="flat-number-chart-{project_id}">',
                         '<div class="col" id="flat-number-chart-container-{project_id}" style="height: 200px;"></div>',
                         '<div class="col project-info-expander" style="height: 200px;">',
-                            '<p>Последняя проверка: {last_check_at}</p>',
-                            '<p>Ссылка на проект: <a href={url}>{name}</a></p>',
+                            '<p><b>Последняя проверка:</b> {last_check_at}</p>',
+                            '<p><b>Ссылка на проект:</b> <a href={url}>{name}</a></p>',
                         '</div>',
                     '</div>',
                     '<div class="row mt-5 mb-5" id="flat-avg-price-chart-{project_id}">',
@@ -40,11 +40,11 @@ function renderProjectsGrid(){
                 render: function(renderTo, data, columnsWidth){
                     $(".fancy-grid-expand-row").find(':hidden').remove()
                     $.getJSON( "/api/projects/"+ data.project_id +"/stats", function( d ) {
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество студий: "+ d['statistics']['0']['count'] +"</p>")
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество 1 к.кв: "+ d['statistics']['1']['count'] +"</p>")
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество 2 к.кв: "+ d['statistics']['2']['count'] +"</p>")
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество 3 к.кв: "+ d['statistics']['3']['count'] +"</p>")
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество 4 к.кв: "+ d['statistics']['4']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество студий:</b> "+ d['statistics']['0']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество 1 к.кв:</b> "+ d['statistics']['1']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество 2 к.кв:</b> "+ d['statistics']['2']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество 3 к.кв:</b> "+ d['statistics']['3']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество 4 к.кв:</b> "+ d['statistics']['4']['count'] +"</p>")
                         drawFlatsAvgPriceChart(data.project_id, d['statistics'])
                         console.log(data)
                     });
@@ -83,15 +83,11 @@ function renderProjectsGrid(){
             },
 
             columns: [{
-                type: 'expand',
-                locked: true
-            }, {
                 index: 'project_img',
                 title: 'Фото',
                 type: 'image',
                 cls: 'photo',
-                flex: 1,
-                width: 100,
+                width: 110,
             },{
                 index: 'name',
                 title: 'Название',
@@ -134,7 +130,7 @@ function renderFlatsGrid(project_id){
             width: 'fit',
             height: 'fit',
             trackOver: true,
-            cellHeight: 75,
+            cellHeight: 100,
             columnLines: false,
             theme: 'gray',
 
@@ -149,13 +145,26 @@ function renderFlatsGrid(project_id){
                 tpl: [
                     '<div class="row mt-5 mb-5" id="flat-price-chart-{flat_id}">',
                         '<div class="col" id="flat-price-chart-container-{flat_id}" style="height: 200px; width: 100%;"></div>',
-                        '<div class="col" style="height: 200px;"></div>',
+                        '<div class="col project-info-expander" style="height: 200px;">',
+                            '<p><b>Проект:</b> {project_name}</p>',
+                            '<p><b>Последняя проверка:</b> {last_check_at}</p>',
+                            '<p><b>Адрес:</b> {address}</p>',
+                            '<p><b>Блок:</b> {house}</p>',
+                            '<p><b>Статус:</b> {last_status}</p>',
+                            '<p><b>Этаж:</b> {floor}</p>',
+                            '<p><b>Заселение:</b> {settlement_date}</p>',
+                        '</div>',
                     '</div>'
                 ].join(""),
                 render: function(renderTo, data, columnsWidth){
                     $(".fancy-grid-expand-row").find(':hidden').remove()
+                    console.log(data)
                     drawFlatPriceChart(data.flat_id, data)
-                }
+                },
+                dataFn: function(grid, data){
+                    data.project_name = data.project.name
+                    return data
+                },
             },
 
             events: [{
@@ -187,14 +196,11 @@ function renderFlatsGrid(project_id){
 
 
             columns: [{
-                type: 'expand',
-                locked: true
-            },{
                 index: 'flat_plan_img',
                 title: 'Фото',
                 type: 'image',
                 cls: 'photo',
-                flex: 1,
+                width: 100
             },{
                 title: 'Дом',
                 flex: 1,
