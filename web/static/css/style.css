@@ -7,9 +7,9 @@
 
 .fancy-grid-cell-inner {
 font-family: 'Times New Roman', Times, serif;
-  margin-top: 40px;
+  padding-top: 30px;
   border-top: 10px;
-  font-size: 200%;
+  font-size: 300%;
   height: 50px;
   font: red;
 }
@@ -39,4 +39,12 @@ body {
 
 .fancy-grid-expand-row {
     background-color: #f0f0f5;
+}
+
+.fancy-grid-header-cell-text {
+    font-size: 150%;
+}
+
+.project-info-expander p {
+    padding: 2px;
 }

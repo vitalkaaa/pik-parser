@@ -215,6 +215,7 @@ function renderFlatsGrid(project_id){
                 title: 'Площадь',
                 type: 'number',
                 flex: 1,
+                width: 90,
                 filter: {
                     header: true,
                     emptyText: '',
@@ -263,8 +264,9 @@ function renderFlatsGrid(project_id){
                 }
             }, {
                 index: 'rooms',
-                title: 'Количество комнат',
+                title: 'Комнат',
                 flex: 1,
+                width: 80,
                 type: 'number',
                 filter: {
                     header: true,
