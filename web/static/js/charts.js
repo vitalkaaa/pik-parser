@@ -20,7 +20,6 @@ function drawFlatNumberChart(id, data){
         axisY: {
             titleFontSize: 20,
             gridColor: "gray",
-            interval: 10,
             gridThickness: 0,
             labelFontSize: 20,
             includeZero: false
