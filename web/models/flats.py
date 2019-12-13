@@ -34,7 +34,6 @@ class Flats(Document):
         else:
             flatd['settlement_date'] = datetime.utcnow()
 
-
         Flats(**flatd, project=project, checks=[check], found_at=check['check_at']).save()
 
     @staticmethod
@@ -109,3 +108,24 @@ class Flats(Document):
                 'prices': [check['price'] for check in flat['checks']],
                 'statuses': [check['status'] for check in flat['checks']],
             })
+
+    @staticmethod
+    def get_stats(project_id):
+        flat_statistic = dict()
+        for i in ['0', '1', '2', '3', '4']:
+            prices = dict()
+            flat_statistic[i] = {'dates': [], 'price': [], 'count': 0}
+
+            for flat in Flats.objects(project=project_id, rooms=int(i)).all():
+                flat_statistic[i]['count'] += 1
+                for c in flat.checks:
+                    date = str(c['check_at'].date())
+                    prices.setdefault(date, list())
+                    prices[date].append(c['price']/flat.area)
+
+            for p in prices:
+                flat_statistic[i]['dates'].append(p)
+                flat_statistic[i]['price'].append(sum(prices[p]) / len(prices[p]))
+
+        return dict(statistics=flat_statistic)
+

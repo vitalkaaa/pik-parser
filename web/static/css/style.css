@@ -22,4 +22,19 @@
 
 .open-flat-page-btn{
     padding: 10px;
+    margin: 10px;
+}
+
+.project-info-expander{
+    margin-left: 30px;
+    font-size: 150%;
+    color: black;
+}
+
+body {
+    background-color: #e6e6ff;
+}
+
+.fancy-grid-expand-row {
+    background-color: #f0f0f5;
 }

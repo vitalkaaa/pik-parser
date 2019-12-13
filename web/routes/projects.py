@@ -17,16 +17,16 @@ def api_projects():
     return json.dumps(Projects.get_contexts())
 
 
-@bp.route('/api/flats')
-def api_flats():
-    """Информация о всех квартирах"""
-    return json.dumps(Flats.get_contexts())
-
-
-@bp.route('/api/flats/<int:project_id>')
+@bp.route('/api/projects/<int:project_id>')
 def api_flats_by_project(project_id):
     """Информация о квартирах в проекте"""
     return json.dumps(Flats.get_contexts(project_id=project_id))
+
+
+@bp.route('/api/projects/<int:project_id>/stats')
+def api_flats_stats(project_id):
+    """Информация о квартирах в проекте"""
+    return json.dumps(Flats.get_stats(project_id=project_id))
 
 
 @bp.route('/projects')

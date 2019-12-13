@@ -1,73 +1,3 @@
-function drawProjectChart(id, data){
-    var dataPoints = [];
-
-    var options =  {
-        animationEnabled: true,
-        theme: "light2",
-        height: 200,
-        axisX: {
-            valueFormatString: "DD MMM YYYY",
-        },
-        axisY: {
-            title: "Количество квартир",
-            titleFontSize: 14,
-            gridColor: "gray",
-            gridThickness: 0,
-            includeZero: false
-        },
-        data: [{
-            type: "line",
-            yValueFormatString: "#,###",
-            dataPoints: dataPoints
-        }]
-    };
-
-    for (var i=0; i<data.dates.length; i++) {
-        dataPoints.push({
-            x: new Date(Date.parse(data.dates[i])),
-            y: data.flats[i]
-        })
-    }
-
-    $("#flat-number-chart-container-" + id).CanvasJSChart(options);
-}
-
-function drawFloatCostChart(id, data){
-    var dataPoints = [];
-
-    var options =  {
-        animationEnabled: true,
-        theme: "light2",
-        height: 200,
-        axisX: {
-            valueFormatString: "DD MMM YYYY",
-        },
-        axisY: {
-            title: "Цена квартиры",
-            titleFontSize: 14,
-            gridColor: "gray",
-            gridThickness: 0,
-            includeZero: false
-
-        },
-        data: [{
-            type: "line",
-            yValueFormatString: "Р#,###.##",
-            dataPoints: dataPoints
-        }]
-    };
-
-    for (var i=0; i<data.dates.length; i++) {
-        dataPoints.push({
-            x: new Date(Date.parse(data.dates[i])),
-            y: data.prices[i]
-        })
-    }
-
-    $("#flat-price-chart-container-" + id).CanvasJSChart(options);
-}
-
-
 function renderProjectsGrid(){
     document.addEventListener("DOMContentLoaded", function() {
         new FancyGrid({
@@ -93,19 +23,32 @@ function renderProjectsGrid(){
                 tpl: [
                     '<div class="row mt-5 mb-5" id="flat-number-chart-{project_id}">',
                         '<div class="col" id="flat-number-chart-container-{project_id}" style="height: 200px;"></div>',
-                        '<div class="col" style="height: 200px;"></div>',
+                        '<div class="col project-info-expander" style="height: 200px;">',
+                            '<p>Последняя проверка: {last_check_at}</p>',
+                            '<p>Ссылка на проект: <a href={url}>{name}</a></p>',
+                        '</div>',
+                    '</div>',
+                    '<div class="row mt-5 mb-5" id="flat-avg-price-chart-{project_id}">',
+                        '<div class="col" id="flat-avg-price-chart-container-{project_id}" style="height: 200px;"></div>',
                     '</div>',
                     '<div class="row mt-5" id="open-flat-page">',
                         '<div class="col-sm-12 text-center">',
-                            '<a class="btn btn-secondary open-flat-page-btn"href="/projects/{project_id}">',
-                                'Посмотреть квартиры ',
-                            '</a>',
+                            '<a class="btn btn-secondary open-flat-page-btn"href="/projects/{project_id}">Посмотреть квартиры</a>',
                         '</div>',
                     '</div>',
                 ].join(""),
                 render: function(renderTo, data, columnsWidth){
                     $(".fancy-grid-expand-row").find(':hidden').remove()
-                    drawProjectChart(data.project_id, data)
+                    $.getJSON( "/api/projects/"+ data.project_id +"/stats", function( d ) {
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество студий: "+ d['statistics']['0']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество 1 к.кв: "+ d['statistics']['1']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество 2 к.кв: "+ d['statistics']['2']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество 3 к.кв: "+ d['statistics']['3']['count'] +"</p>")
+                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p>Количество 4 к.кв: "+ d['statistics']['4']['count'] +"</p>")
+                        drawFlatsAvgPriceChart(data.project_id, d['statistics'])
+                        console.log(data)
+                    });
+                    drawFlatNumberChart(data.project_id, data)
                 },
                 dataFn: function(grid, data){
                     return data
@@ -198,20 +141,20 @@ function renderFlatsGrid(project_id){
             data: {
                 proxy: {
                   type: 'rest',
-                  url: '/api/flats/' + project_id
+                  url: '/api/projects/' + project_id
                 }
             },
 
             expander: {
                 tpl: [
                     '<div class="row mt-5 mb-5" id="flat-price-chart-{flat_id}">',
-                    '<div class="col" id="flat-price-chart-container-{flat_id}" style="height: 200px; width: 100%;"></div>',
-                   '<div class="col" style="height: 200px;"></div>',
+                        '<div class="col" id="flat-price-chart-container-{flat_id}" style="height: 200px; width: 100%;"></div>',
+                        '<div class="col" style="height: 200px;"></div>',
                     '</div>'
                 ].join(""),
                 render: function(renderTo, data, columnsWidth){
                     $(".fancy-grid-expand-row").find(':hidden').remove()
-                    drawFloatCostChart(data.flat_id, data)
+                    drawFlatPriceChart(data.flat_id, data)
                 }
             },
 
