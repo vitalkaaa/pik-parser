@@ -5,14 +5,24 @@ function drawFlatNumberChart(id, data){
         animationEnabled: true,
         theme: "light2",
         height: 200,
+
+        title: {
+            text: "Количество квартир",
+            fontSize: 20
+        },
+
         axisX: {
-            valueFormatString: "DD MMM YYYY",
+            valueFormatString: "DD/MM/YYYY",
+            intervalType: "day",
+            interval: 1,
+            labelFontSize: 20,
         },
         axisY: {
-            title: "Количество квартир",
-            titleFontSize: 14,
+            titleFontSize: 20,
             gridColor: "gray",
+            interval: 10,
             gridThickness: 0,
+            labelFontSize: 20,
             includeZero: false
         },
         data: [{
@@ -44,12 +54,25 @@ function drawFlatsAvgPriceChart(id, data){
         animationEnabled: true,
         theme: "light2",
         height: 250,
+
+        legend: {
+            fontSize: 20
+        },
+
+        title: {
+            text: "Средняя стоимость квартир за м²",
+            fontSize: 20
+        },
+
         axisX: {
-            valueFormatString: "DD MMM YYYY",
+            valueFormatString: "DD/MM/YYYY",
+            labelFontSize: 20,
+            intervalType: "day",
+            interval: 1,
         },
         axisY: {
-            title: "Средняя стоимость квартир за м²",
-            titleFontSize: 14,
+            titleFontSize: 20,
+            labelFontSize: 20,
             gridColor: "gray",
             gridThickness: 0,
             includeZero: false
@@ -132,12 +155,21 @@ function drawFlatPriceChart(id, data){
         animationEnabled: true,
         theme: "light2",
         height: 200,
+
+        title: {
+            text: "Цена квартиры",
+            fontSize: 20
+        },
+
         axisX: {
-            valueFormatString: "DD MMM YYYY",
+            valueFormatString: "DD/MM/YYYY",
+            labelFontSize: 20,
+            intervalType: "day",
+            interval: 1,
         },
         axisY: {
-            title: "Цена квартиры",
-            titleFontSize: 14,
+            titleFontSize: 20,
+            labelFontSize: 20,
             gridColor: "gray",
             gridThickness: 0,
             includeZero: false
