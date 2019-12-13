@@ -97,28 +97,32 @@ function renderProjectsGrid(){
                     '</div>',
                     '<div class="row mt-5" id="open-flat-page">',
                         '<div class="col-sm-12 text-center">',
-                            '<a class="btn btn-secondary" id="open-flat-page-btn"> Посмотреть квартиры </a>',
+                            '<a class="btn btn-secondary open-flat-page-btn"href="/projects/{project_id}">',
+                                'Посмотреть квартиры ',
+                            '</a>',
                         '</div>',
                     '</div>',
                 ].join(""),
                 render: function(renderTo, data, columnsWidth){
                     $(".fancy-grid-expand-row").find(':hidden').remove()
-                    $("#open-flat-page-btn").prop("href", "/projects/" + data.project_id)
                     drawProjectChart(data.project_id, data)
                 },
                 dataFn: function(grid, data){
                     return data
-                }
+                },
             },
 
             events: [{
-              expand: function(grid, group, groupValue) {
-                console.log(group)
-              }
-            }, {
-              collapse: function(grid, group, groupValue) {
-                console.log(grid)
-              }
+                cellclick: function(grid, o) {
+                    console.log(o.data.expanded)
+                    if (o.data.expanded != true) {
+                        grid.expander.expand(o.infiniteRowIndex);
+                        o.data.expanded = true
+                    } else {
+                        grid.expander.collapse(o.infiniteRowIndex);
+                        o.data.expanded = false
+                    }
+                }
             }],
 
             paging: {
@@ -210,6 +214,19 @@ function renderFlatsGrid(project_id){
                     drawFloatCostChart(data.flat_id, data)
                 }
             },
+
+            events: [{
+                cellclick: function(grid, o) {
+                    console.log(o.data.expanded)
+                    if (o.data.expanded != true) {
+                        grid.expander.expand(o.infiniteRowIndex);
+                        o.data.expanded = true
+                    } else {
+                        grid.expander.collapse(o.infiniteRowIndex);
+                        o.data.expanded = false
+                    }
+                }
+            }],
 
             paging: {
                 pageSize: 20,

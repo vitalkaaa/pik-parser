@@ -29,8 +29,12 @@ class Flats(Document):
 
         flatd.pop('last_price')
         flatd.pop('last_status')
-        if flatd.get('settlement_date'):
-            flatd['settlement_date'] = datetime.strptime(flatd.pop('settlement_date'), '%Y-%m-%d')
+        if flatd.get('settlement_date') and flatd.get('settlement_date') != '0':
+            flatd['settlement_date'] = datetime.strptime(str(flatd.pop('settlement_date')), '%Y')
+        else:
+            flatd['settlement_date'] = datetime.utcnow()
+
+
         Flats(**flatd, project=project, checks=[check], found_at=check['check_at']).save()
 
     @staticmethod

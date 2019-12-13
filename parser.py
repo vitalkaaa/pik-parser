@@ -48,15 +48,15 @@ class Parser:
                 for flat in flats_json['flats']:
                     self.flats.append({
                         'flat_id': flat['id'],
-                        'project_id': flat['block_id'],
+                        'project_id': flat['block']['id'],
                         'area': flat['area'],
                         'floor': flat['floor'],
                         'last_price': flat['price'],
                         'rooms': flat['rooms'] if flat['rooms'] != 'studio' else 0,
                         'last_status': flat['status'],
-                        'address': flat['bulk']['address'],
+                        'address': '',  # flat['bulk']['address'],
                         'house': flat['bulk']['title'],
-                        'settlement_date': flat['bulk']['settlement_date'],
+                        'settlement_date': flat['bulk']['settlement_year'],
                         'section_id': flat['section']['number'],
                         'flat_plan_img': flat['layout']['flat_plan_png'] if flat['layout']['flat_plan_png'] else ''
                     })
@@ -94,7 +94,7 @@ class Parser:
         self.__download_flats()
 
     def store(self):
-        self.__store_projects()
+        # self.__store_projects()
         self.__store_flats()
 
 
