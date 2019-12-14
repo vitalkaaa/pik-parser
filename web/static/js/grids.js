@@ -31,7 +31,7 @@ function renderProjectsGrid(){
                     $.getJSON( "/api/projects/"+ o.data.project_id +"/stats", function( d ) {
                         $('.modal-body').empty();
                         $('.modal-body').append(
-                            ['<div class="row mt-2 mb-4" id="project-info-row">',
+                            ['<div class="row mt-2 mb-4" id="project-info-row" style="max-height:250px;">',
                                 '<div class="col-5 project-photo-container">',
                                     '<img src="'+ o.data.project_img +'"></img>',
                                 '</div>',
@@ -145,7 +145,7 @@ function renderFlatsGrid(project_id){
                     $('#open-flats-btn').prop('hidden', true)
 
                     $('.modal-body').append([
-                        '<div class="row mt-2 mb-4" id="project-info-row">',
+                        '<div class="row mt-2 mb-4" id="project-info-row" style="max-height:250px;>',
                             '<div class="col-5 project-photo-container">',
                                 '<img src="'+ o.data.flat_plan_img +'"></img>',
                             '</div>',
