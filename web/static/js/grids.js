@@ -19,52 +19,47 @@ function renderProjectsGrid(){
               }
             },
 
-            expander: {
-                tpl: [
-                    '<div class="row mt-5 mb-5" id="flat-number-chart-{project_id}">',
-                        '<div class="col" id="flat-number-chart-container-{project_id}" style="height: 200px;"></div>',
-                        '<div class="col project-info-expander" style="height: 200px;">',
-                            '<p><b>Последняя проверка:</b> {last_check_at}</p>',
-                            '<p><b>Ссылка на проект:</b> <a href={url}>{name}</a></p>',
-                        '</div>',
-                    '</div>',
-                    '<div class="row mt-5 mb-5" id="flat-avg-price-chart-{project_id}">',
-                        '<div class="col" id="flat-avg-price-chart-container-{project_id}" style="height: 200px;"></div>',
-                    '</div>',
-                    '<div class="row mt-5" id="open-flat-page">',
-                        '<div class="col-sm-12 text-center">',
-                            '<a class="btn btn-secondary open-flat-page-btn"href="/projects/{project_id}">Посмотреть квартиры</a>',
-                        '</div>',
-                    '</div>',
-                ].join(""),
-                render: function(renderTo, data, columnsWidth){
-                    $(".fancy-grid-expand-row").find(':hidden').remove()
-                    $.getJSON( "/api/projects/"+ data.project_id +"/stats", function( d ) {
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество студий:</b> "+ d['statistics']['0']['count'] +"</p>")
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество 1 к.кв:</b> "+ d['statistics']['1']['count'] +"</p>")
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество 2 к.кв:</b> "+ d['statistics']['2']['count'] +"</p>")
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество 3 к.кв:</b> "+ d['statistics']['3']['count'] +"</p>")
-                        $('#flat-number-chart-' + data.project_id + ' .project-info-expander').append("<p><b>Количество 4 к.кв:</b> "+ d['statistics']['4']['count'] +"</p>")
-                        drawFlatsAvgPriceChart(data.project_id, d['statistics'])
-                        console.log(data)
-                    });
-                    drawFlatNumberChart(data.project_id, data)
-                },
-                dataFn: function(grid, data){
-                    return data
-                },
-            },
 
             events: [{
                 cellclick: function(grid, o) {
-                    console.log(o.data.expanded)
-                    if (o.data.expanded != true) {
-                        grid.expander.expand(o.infiniteRowIndex);
-                        o.data.expanded = true
-                    } else {
-                        grid.expander.collapse(o.infiniteRowIndex);
-                        o.data.expanded = false
-                    }
+                    $('#exampleModalLabel').text(o.data.name)
+                    $('#open-flats-btn').prop('href', '/projects/' + o.data.project_id)
+                    $('.modal-body').empty();
+                    $('.modal-body').append('<div class="spinner-border" role="status"><span class="sr-only">Loading...</span></div>');
+                    $('#exampleModal').modal()
+
+                    $.getJSON( "/api/projects/"+ o.data.project_id +"/stats", function( d ) {
+                        $('.modal-body').empty();
+                        $('.modal-body').append(
+                            ['<div class="row mt-2 mb-4" id="project-info-row">',
+                                '<div class="col-5 project-photo-container">',
+                                    '<img src="'+ o.data.project_img +'"></img>',
+                                '</div>',
+                                '<div class="col-1"></div>',
+                                '<div class="col-6 project-info-row-container">',
+                                    '<p><b>Последняя проверка:</b> '+o.data.last_check_at+'</p>',
+                                    '<p><b>Ссылка на проект:</b> <a href='+o.data.url+'>'+o.data.name+'</a></p>',
+                                '</div>',
+                            '</div><hr>',
+                            '<div class="row mt-2 mb-4" id="flat-number-chart" style="height:200px;width:100%;">',
+                                '<div class="col" id="flat-number-chart-container" style="height:200px;width:100%;"></div>',
+                            '</div><hr>',
+                            '<div class="row mt-2 mb-4" id="flat-avg-price-chart" style="height:250px;width:100%;">',
+                                '<div class="col" id="flat-avg-price-chart-container" style="height:250px;width:100%;"></div>',
+                            '</div>',
+                            ].join('')
+                        )
+
+                        $('#project-info-row .project-info-row-container').append("<p><b>Количество студий:</b> "+ d['statistics']['0']['count'] +"</p>")
+                        $('#project-info-row .project-info-row-container').append("<p><b>Количество 1 к.кв:</b> "+ d['statistics']['1']['count'] +"</p>")
+                        $('#project-info-row .project-info-row-container').append("<p><b>Количество 2 к.кв:</b> "+ d['statistics']['2']['count'] +"</p>")
+                        $('#project-info-row .project-info-row-container').append("<p><b>Количество 3 к.кв:</b> "+ d['statistics']['3']['count'] +"</p>")
+                        $('#project-info-row .project-info-row-container').append("<p><b>Количество 4 к.кв:</b> "+ d['statistics']['4']['count'] +"</p>")
+
+
+                        drawFlatsAvgPriceChart(d['statistics'])
+                        drawFlatNumberChart(o.data)
+                    });
                 }
             }],
 
@@ -169,14 +164,34 @@ function renderFlatsGrid(project_id){
 
             events: [{
                 cellclick: function(grid, o) {
-                    console.log(o.data.expanded)
-                    if (o.data.expanded != true) {
-                        grid.expander.expand(o.infiniteRowIndex);
-                        o.data.expanded = true
-                    } else {
-                        grid.expander.collapse(o.infiniteRowIndex);
-                        o.data.expanded = false
-                    }
+                    $('#exampleModalLabel').text(o.data.project.name)
+                    $('.modal-body').empty();
+
+                    $('#open-flats-btn').prop('hidden', true)
+
+                    $('.modal-body').append([
+                        '<div class="row mt-2 mb-4" id="project-info-row">',
+                            '<div class="col-5 project-photo-container">',
+                                '<img src="'+ o.data.flat_plan_img +'"></img>',
+                            '</div>',
+                            '<div class="col-1"></div>',
+                            '<div class="col-6 project-info-row-container">',
+                                    '<p><b>Проект:</b> '+o.data.project.name+'</p>',
+                                '<p><b>Последняя проверка:</b> '+o.data.last_check_at+'</p>',
+                                '<p><b>Адрес:</b> '+o.data.address+'</p>',
+                                '<p><b>Блок:</b> '+o.data.house+'</p>',
+                                '<p><b>Статус:</b> '+o.data.last_status+'</p>',
+                                '<p><b>Этаж:</b> '+o.data.floor+'</p>',
+                                '<p><b>Заселение:</b> '+ o.data.settlement_date +'</p>',
+                            '</div>',
+                        '</div><hr>',
+                        '<div class="row mt-2 mb-4" id="flat-price-chart" style="height:200px;width:100%;">',
+                            '<div class="col" id="flat-price-chart-container" style="height:200px;width:100%;"></div>',
+                        '</div>',
+                        ].join(''));
+
+                    $('#exampleModal').modal();
+                    drawFlatPriceChart(o.data);
                 }
             }],
 

@@ -94,7 +94,7 @@ class Parser:
         self.__download_flats()
 
     def store(self):
-        # self.__store_projects()
+        self.__store_projects()
         self.__store_flats()
 
 

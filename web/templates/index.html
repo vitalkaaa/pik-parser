@@ -28,13 +28,10 @@
     <script src="/static/js/jquery.sparkline.min.js"></script>
     <script src="/static/js/highcharts.js"></script>
     <script src="/static/js/highchart-gray-theme.js"></script>
-    <script src="/static/js/bootstrap/bootstrap.min.js"></script>
-    <script src="/static/js/jquery.modal.min.js"></script>
     <script>Fancy.MODULESDIR="https://cdn.fancygrid.com/modules/";</script>
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
-    <link rel="stylesheet" href="/static/css/bootstrap/bootstrap.min.css">
-    <link rel="stylesheet" href="/static/css/jquery.modal.min.css" />
 </head>
 
 <body style="max-height: 100% !important;">
@@ -42,6 +39,8 @@
     <script type="text/javascript" src="/static/js/grids.js"></script>
     <script type="text/javascript" src="/static/js/charts.js"></script>
 
+
+    {% include 'modal.html'%}
 
     <nav class="navbar navbar-dark bg-dark">
       <a class="navbar-brand" href="/projects">Все проекты</a>
@@ -52,6 +51,9 @@
     {% block content %}{% endblock %}
 
     <script type="text/javascript" src="/static/js/jquery.canvasjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
 
 </body>
 </html>
