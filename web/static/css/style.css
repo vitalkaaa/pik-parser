@@ -65,3 +65,8 @@ body {
   line-height: 80px;
   font-size: 200%;
 }
+
+.fancy-panel-bbar{
+    font-size: 200%;
+    height: 200px;
+}

@@ -136,31 +136,6 @@ function renderFlatsGrid(project_id){
                 }
             },
 
-            expander: {
-                tpl: [
-                    '<div class="row mt-5 mb-5" id="flat-price-chart-{flat_id}">',
-                        '<div class="col" id="flat-price-chart-container-{flat_id}" style="height: 200px; width: 100%;"></div>',
-                        '<div class="col project-info-expander" style="height: 200px;">',
-                            '<p><b>Проект:</b> {project_name}</p>',
-                            '<p><b>Последняя проверка:</b> {last_check_at}</p>',
-                            '<p><b>Адрес:</b> {address}</p>',
-                            '<p><b>Блок:</b> {house}</p>',
-                            '<p><b>Статус:</b> {last_status}</p>',
-                            '<p><b>Этаж:</b> {floor}</p>',
-                            '<p><b>Заселение:</b> {settlement_date}</p>',
-                        '</div>',
-                    '</div>'
-                ].join(""),
-                render: function(renderTo, data, columnsWidth){
-                    $(".fancy-grid-expand-row").find(':hidden').remove()
-                    console.log(data)
-                    drawFlatPriceChart(data.flat_id, data)
-                },
-                dataFn: function(grid, data){
-                    data.project_name = data.project.name
-                    return data
-                },
-            },
 
             events: [{
                 cellclick: function(grid, o) {

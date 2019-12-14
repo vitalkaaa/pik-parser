@@ -31,7 +31,8 @@ function drawFlatNumberChart(data){
             includeZero: false
         },
         data: [{
-            type: "line",
+            markerSize: 5,
+            type: "splineArea",
             yValueFormatString: "#,###",
             dataPoints: dataPoints
         }]
@@ -116,31 +117,36 @@ function drawFlatsAvgPriceChart(data){
             includeZero: false
         },
         data: [{
-            type: "line",
+            markerSize: 5,
+            type: "spline",
             yValueFormatString: "#,###",
             name: "Студии",
             showInLegend: true,
             dataPoints: dataPoints0
         }, {
-            type: "line",
+            markerSize: 5,
+            type: "spline",
             name: "1 к.кв.",
             showInLegend: true,
             yValueFormatString: "#,###",
             dataPoints: dataPoints1
         }, {
-            type: "line",
+            markerSize: 5,
+            type: "spline",
             name: "2 к.кв.",
             showInLegend: true,
             yValueFormatString: "#,###",
             dataPoints: dataPoints2
         }, {
-            type: "line",
+            markerSize: 5,
+            type: "spline",
             name: "3 к.кв.",
             showInLegend: true,
             yValueFormatString: "#,###",
             dataPoints: dataPoints3
         }, {
-            type: "line",
+            markerSize: 5,
+            type: "spline",
             name: "4 к.кв.",
             showInLegend: true,
             yValueFormatString: "#,###",
@@ -189,7 +195,8 @@ function drawFlatPriceChart(data){
 
         },
         data: [{
-            type: "line",
+            markerSize: 5,
+            type: "splineArea",
             yValueFormatString: "Р#,###.##",
             dataPoints: dataPoints
         }]
