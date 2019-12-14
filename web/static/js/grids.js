@@ -63,10 +63,10 @@ function renderProjectsGrid(){
                 }
             }],
 
-            paging: {
-                pageSize: 20,
-                pageSizeData: [10, 20, 50, 100]
-            },
+//            paging: {
+//                pageSize: 20,
+//                pageSizeData: [10, 20, 50, 100]
+//            },
 
             defaults: {
                 type: 'string',
@@ -170,10 +170,10 @@ function renderFlatsGrid(project_id){
                 }
             }],
 
-            paging: {
-                pageSize: 20,
-                pageSizeData: [10, 20, 50, 100]
-            },
+//            paging: {
+//                pageSize: 20,
+//                pageSizeData: [10, 20, 50, 100]
+//            },
 
             defaults: {
                 type: 'string',
