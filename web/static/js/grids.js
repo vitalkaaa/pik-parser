@@ -166,8 +166,8 @@ function renderFlatsGrid(project_id){
                                 '<p><b>Заселение:</b> '+ o.data.settlement_date +'</p>',
                             '</div>',
                         '</div><hr>',
-                        '<div class="row mt-2 mb-4" id="flat-price-chart" style="height:200px;width:100%;">',
-                            '<div class="col" id="flat-price-chart-container" style="height:200px;width:100%;"></div>',
+                        '<div class="row mt-2 mb-4" id="flat-price-chart" style="height:250px;width:100%;">',
+                            '<div class="col" id="flat-price-chart-container" style="height:250px;width:100%;"></div>',
                         '</div>',
                         ].join(''));
 
