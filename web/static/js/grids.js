@@ -6,7 +6,7 @@ function renderProjectsGrid(){
             textSelection: true,
             width: 'fit',
             height: 'fit',
-            trackOver: false,
+            trackOver: true,
             nativeScroller: false,
             cellHeight: 100,
             columnLines: false,
