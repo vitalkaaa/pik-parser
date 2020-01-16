@@ -65,25 +65,27 @@ class Flats(Document):
 
         project_context = Projects.get_context(project_id)['data']
         for flat in flats:
-            contexts.append({
-                'flat_id': flat.flat_id,
-                'project': project_context,
-                'section_id': flat.section_id,
-                'area': flat.area,
-                'floor': flat.floor,
-                'rooms': flat.rooms,
-                'address': flat.address,
-                'settlement_date': str(flat.settlement_date.date()) if flat.settlement_date else '',
-                'house': flat.house,
-                'flat_plan_img': flat.flat_plan_img,
-                'last_price': flat.checks[-1]['price'],
-                'last_price_per_m': flat.checks[-1]['price']/flat.area,
-                'last_check_at': str(flat['checks'][-1]['check_at'].date()),
-                'last_status': flat['checks'][-1]['status'],
-                'dates': [str(check['check_at'].date()) for check in flat['checks']],
-                'prices': [check['price'] for check in flat['checks']],
-                'statuses': [check['status'] for check in flat['checks']],
-            })
+            if flat['checks'][-1]['check_at'].date() == datetime.utcnow().date():
+                contexts.append({
+                    'flat_id': flat.flat_id,
+                    'project': project_context,
+                    'section_id': flat.section_id,
+                    'area': flat.area,
+                    'floor': flat.floor,
+                    'rooms': flat.rooms,
+                    'address': flat.address,
+                    'settlement_date': str(flat.settlement_date.date()) if flat.settlement_date else '',
+                    'house': flat.house,
+                    'flat_plan_img': flat.flat_plan_img,
+                    'last_price': flat.checks[-1]['price'],
+                    'last_price_per_m': flat.checks[-1]['price']/flat.area,
+                    'last_check_at': str(flat['checks'][-1]['check_at'].date()),
+                    'last_status': flat['checks'][-1]['status'],
+                    'dates': [str(check['check_at'].date()) for check in flat['checks']],
+                    'prices': [check['price'] for check in flat['checks']],
+                    'statuses': [check['status'] for check in flat['checks']],
+                })
+
         return dict(data=contexts)
 
     @staticmethod
