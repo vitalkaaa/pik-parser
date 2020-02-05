@@ -39,7 +39,7 @@ function renderProjectsGrid(){
                                     '<div class="col-1"></div>',
                                     '<div class="col-6 project-info-row-container">',
                                         '<p><b>Последняя проверка:</b> '+o.data.last_check_at+'</p>',
-                                        '<p><b>Ссылка на проект:</b> <a href='+o.data.url+'>'+o.data.name+'</a></p>',
+                                        '<p><b>Ссылка на проект:</b> <a href='+o.data.url+' target="_blank">'+o.data.name+'</a></p>',
                                     '</div>',
                                 '</div><hr>',
                                 '<div class="row mt-2 mb-4" id="flat-number-chart" style="height:200px;width:100%;">',
@@ -113,7 +113,7 @@ function renderProjectsGrid(){
                 render: function(o){
                     url = '/projects/' + o.data.project_id
 
-                    o.value = '<a class="btn btn-success grid-btn" href="'+url+'">Квартиры</a>';
+                    o.value = '<a class="btn btn-success grid-btn" href="'+url+'"  target="_blank">Квартиры</a>';
                     return o
                 }
             }]
