@@ -3,11 +3,11 @@ function renderProjectsGrid(){
         new FancyGrid({
             title: 'Проекты',
             renderTo: 'grid-container',
-            textSelection: true,
+            textSelection: false,
             width: 'fit',
             height: 'fit',
             trackOver: true,
-            nativeScroller: false,
+            nativeScroller: true,
             cellHeight: 100,
             columnLines: false,
             theme: 'gray',

@@ -20,7 +20,7 @@ function drawFlatNumberChart(data){
         axisX: {
             valueFormatString: "DD/MM/YYYY",
             intervalType: "day",
-            interval: 1,
+            interval: 7,
             labelFontSize: 20,
         },
         axisY: {
@@ -107,7 +107,7 @@ function drawFlatsAvgPriceChart(data){
             valueFormatString: "DD/MM/YYYY",
             labelFontSize: 20,
             intervalType: "day",
-            interval: 1,
+            interval: 7,
         },
         axisY: {
             titleFontSize: 20,
@@ -184,7 +184,7 @@ function drawFlatPriceChart(data){
             valueFormatString: "DD/MM/YYYY",
             labelFontSize: 20,
             intervalType: "day",
-            interval: 1,
+            interval: 7,
         },
         axisY: {
             titleFontSize: 20,
