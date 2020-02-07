@@ -117,17 +117,22 @@ class Flats(Document):
         for i in ['0', '1', '2', '3', '4']:
             prices = dict()
             flat_statistic[i] = {'dates': [], 'price': [], 'count': 0}
-
             for flat in Flats.objects(project=project_id, rooms=int(i)).all():
-                flat_statistic[i]['count'] += 1
+
+                # print(project_id, int(i), flat_statistic[i])
+                # flat_statistic[i]['count'] += 1
                 for c in flat.checks:
                     date = str(c['check_at'].date())
                     prices.setdefault(date, list())
                     prices[date].append(c['price']/flat.area)
 
+                    if c['check_at'].date() == datetime.utcnow().date():
+                        flat_statistic[i]['count'] += 1
+
             for p in prices:
                 flat_statistic[i]['dates'].append(p)
                 flat_statistic[i]['price'].append(sum(prices[p]) / len(prices[p]))
+        pprint(flat_statistic)
 
         return dict(statistics=flat_statistic)
 
