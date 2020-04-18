@@ -132,7 +132,6 @@ class Flats(Document):
             for p in prices:
                 flat_statistic[i]['dates'].append(p)
                 flat_statistic[i]['price'].append(sum(prices[p]) / len(prices[p]))
-        pprint(flat_statistic)
 
         return dict(statistics=flat_statistic)
 
