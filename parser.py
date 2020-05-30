@@ -46,6 +46,7 @@ class Parser:
             for page in range(1, project['flats'] // 50 + 2):
                 flats_json = requests.get(self.FLATS_API_URL % (project['project_id'], page)).json()
                 for flat in flats_json['flats']:
+                    # pprint(flat)
                     self.flats.append({
                         'flat_id': flat['id'],
                         'project_id': flat['block']['id'],
@@ -55,8 +56,8 @@ class Parser:
                         'rooms': flat['rooms'] if flat['rooms'] != 'studio' else 0,
                         'last_status': flat['status'],
                         'address': '',  # flat['bulk']['address'],
-                        'house': flat['bulk']['title'],
-                        'settlement_date': flat['bulk']['settlement_year'],
+                        'house': flat['bulk'].get('title', ''),
+                        'settlement_date': flat['bulk'].get('settlement_year', '0'),
                         'section_id': flat['section']['number'],
                         'flat_plan_img': flat['layout']['flat_plan_png'] if flat['layout']['flat_plan_png'] else ''
                     })
@@ -104,4 +105,4 @@ if __name__ == '__main__':
 
     parser = Parser()
     parser.run()
-    parser.store()
+    # parser.store()
